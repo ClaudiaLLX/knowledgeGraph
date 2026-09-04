@@ -436,6 +436,8 @@ def check_optimistic(row, body, what, current):
 
 # ---------- HTTP Handler ----------
 class Handler(SimpleHTTPRequestHandler):
+    # HTTP/1.1 keep-alive：默认 HTTP/1.0 每响应即断连，云代理复用已关闭连接会偶发 502
+    protocol_version = 'HTTP/1.1'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=ROOT, **kwargs)
 
