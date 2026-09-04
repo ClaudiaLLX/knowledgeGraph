@@ -1,0 +1,2277 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="yuo8MRCfQTUpuozOQ1yYeu">
+<head data-page-node-id="IiI6vaGN7udNyj4leYuI90">
+<meta charset="UTF-8" data-page-node-id="1Ef4RmOtEoYhoLG4zHaoiO">
+<title>国际物流与跨境供应链 · 知识图谱工作台</title>
+<link rel="stylesheet" href="/vis-network.min.css" data-page-node-id="kzyY9HFjUtIQPTOFLFSISD">
+<style>
+  :root {
+    --bg: #fafaf7;
+    --surface: #ffffff;
+    --surface-2: #f4f3ee;
+    --border: #e5e3da;
+    --border-strong: #d3d1c7;
+    --text: #1a1a17;
+    --text-2: #5f5e5a;
+    --text-3: #888780;
+    --primary: #534ab7;
+    --primary-soft: #eeedfe;
+    --danger: #a32d2d;
+    --success: #0f6e56;
+    --warning: #ba7517;
+    --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; color: var(--text); background: var(--bg); font-size: 13px; }
+  body { display: flex; flex-direction: column; }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+  header h1 { font-size: 15px; font-weight: 500; margin: 0; }
+  header .sub { color: var(--text-3); font-size: 12px; }
+  header .spacer { flex: 1; }
+  .btn {
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: var(--radius);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .btn:hover { background: var(--surface-2); border-color: var(--text-3); }
+  .btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .btn.primary:hover { background: #3c3489; }
+  .btn.danger { color: var(--danger); border-color: #f09595; }
+  .btn.danger:hover { background: #fcebeb; }
+  .btn.ghost { border: none; background: transparent; padding: 4px 8px; }
+  .btn.icon { padding: 6px 8px; min-width: 32px; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .search-box {
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+    font-size: 12px;
+    width: 190px;
+    color: var(--text);
+  }
+  .search-box:focus { outline: none; border-color: var(--primary); }
+
+  main { flex: 1; display: flex; min-height: 0; }
+
+  aside.left {
+    width: 220px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 12px;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  aside.left h3 { font-size: 12px; font-weight: 500; color: var(--text-2); margin: 12px 0 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  aside.left h3:first-child { margin-top: 0; }
+  .cat-item { display: flex; align-items: center; padding: 4px 6px; border-radius: 4px; cursor: pointer; font-size: 12px; user-select: none; }
+  .cat-item:hover { background: var(--surface-2); }
+  .cat-item input { margin-right: 6px; }
+  .cat-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; flex-shrink: 0; }
+  .cat-count { margin-left: auto; color: var(--text-3); font-size: 11px; }
+  .filter-head { display: flex; align-items: center; justify-content: space-between; }
+  .filter-head h3 { margin: 12px 0 6px; }
+  .mini-links { display: flex; gap: 6px; }
+  .mini-links a {
+    font-size: 11px; color: var(--primary); cursor: pointer;
+    text-decoration: none; padding: 2px 4px; border-radius: 4px;
+  }
+  .mini-links a:hover { background: var(--surface-2); }
+  .stat-row { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; color: var(--text-2); }
+  .stat-row strong { color: var(--text); font-weight: 500; }
+
+  section.center { flex: 1; position: relative; background: var(--bg); min-width: 0; }
+  #graph { width: 100%; height: 100%; }
+  .graph-toolbar { position: absolute; top: 12px; right: 12px; display: flex; flex-direction: column; gap: 4px; z-index: 5; }
+  .graph-toolbar .btn { background: var(--surface); box-shadow: var(--shadow); }
+  .legend {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 10px;
+    font-size: 11px;
+    color: var(--text-2);
+    max-width: 300px;
+    box-shadow: var(--shadow);
+  }
+
+  aside.right {
+    width: 320px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    padding: 16px;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  aside.right.empty { display: flex; align-items: center; justify-content: center; color: var(--text-3); font-size: 12px; text-align: center; padding: 32px; }
+  .detail-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+  .detail-name { font-size: 15px; font-weight: 500; margin: 0 0 4px; }
+  .detail-cat { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; color: #fff; }
+  .detail-desc { color: var(--text-2); line-height: 1.6; margin: 12px 0; font-size: 13px; }
+  .detail-tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
+  .tag { background: var(--surface-2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 10px; font-size: 11px; color: var(--text-2); }
+  .detail-actions { display: flex; gap: 6px; margin: 12px 0; padding: 12px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .related-section h4 { font-size: 12px; color: var(--text-2); margin: 12px 0 6px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+  .rel-group { margin-bottom: 8px; }
+  .rel-label { font-size: 11px; color: var(--text-3); margin-bottom: 2px; }
+  .rel-list { display: flex; flex-wrap: wrap; gap: 4px; }
+  .rel-chip {
+    background: var(--primary-soft);
+    color: var(--primary);
+    border: 1px solid #cecdf6;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .rel-chip:hover { background: #cecdf6; }
+  .rel-chip.core { border-width: 2px; font-weight: 500; }
+  .rel-chip.weak { opacity: 0.65; border-style: dashed; }
+  .rel-chip.in { background: #e1f5ee; color: #0f6e56; border-color: #9fe1cb; }
+  .rel-chip.in:hover { background: #9fe1cb; }
+
+  .status-bar {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 6px 16px;
+    font-size: 11px;
+    color: var(--text-3);
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); display: inline-block; margin-right: 4px; }
+
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: none; align-items: center; justify-content: center;
+    z-index: 100;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    width: 480px;
+    max-width: 90vw;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .modal.wide { width: 660px; }
+  .modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .modal-header h2 { font-size: 14px; font-weight: 500; margin: 0; }
+  .modal-body { padding: 16px 20px; }
+  .modal-footer { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
+  .form-row { margin-bottom: 12px; }
+  .form-row label { display: block; font-size: 12px; color: var(--text-2); margin-bottom: 4px; font-weight: 500; }
+  .form-row input, .form-row select, .form-row textarea {
+    width: 100%;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--surface);
+  }
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus { outline: none; border-color: var(--primary); }
+  .form-row textarea { min-height: 80px; resize: vertical; }
+
+  /* ---- 可筛选组合框 ---- */
+  .combo { position: relative; }
+  .combo-input {
+    width: 100%;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--surface);
+    box-sizing: border-box;
+  }
+  .combo-input:focus { outline: none; border-color: var(--primary); }
+  .combo-list {
+    display: none;
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0; right: 0;
+    max-height: 210px;
+    overflow-y: auto;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 24px rgba(0,0,0,.14);
+    z-index: 60;
+  }
+  .combo-item {
+    padding: 7px 10px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .combo-item:hover, .combo-item.active { background: color-mix(in srgb, var(--primary) 12%, transparent); }
+  .combo-cat {
+    font-size: 11px;
+    color: var(--text-2);
+    background: var(--border);
+    border-radius: 8px;
+    padding: 1px 7px;
+    white-space: nowrap;
+  }
+  .combo-empty { padding: 8px 10px; font-size: 12px; color: var(--text-2); }
+
+  .version-item {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .version-info { flex: 1; min-width: 0; }
+  .version-name { font-weight: 500; font-size: 13px; }
+  .version-meta { color: var(--text-3); font-size: 11px; margin-top: 2px; }
+  .version-actions { display: flex; gap: 4px; flex-shrink: 0; }
+  .v-badge { padding: 2px 8px; border-radius: 10px; font-size: 11px; color: #fff; margin-left: 6px; }
+  .v-active { background: var(--success); }
+  .v-future { background: #185fa5; }
+  .v-expired { background: #888780; }
+  .v-none { background: #b4b2a9; }
+
+  .context-menu {
+    position: fixed;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    padding: 4px;
+    min-width: 150px;
+    z-index: 200;
+    display: none;
+  }
+  .context-menu.open { display: block; }
+  .ctx-item { padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+  .ctx-item:hover { background: var(--surface-2); }
+  .ctx-item.danger { color: var(--danger); }
+  .ctx-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    font-size: 12px;
+    z-index: 300;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  .presence-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 11px;
+    margin: 0 2px;
+    vertical-align: middle;
+  }
+  #syncBanner {
+    display: none;
+    position: fixed;
+    top: 56px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 90;
+    background: #fff7e6;
+    border: 1px solid #e8c97a;
+    color: #7a5a10;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    box-shadow: var(--shadow);
+  }
+  #syncBanner button { margin-left: 8px; }
+  .conflict-table { width: 100%; border-collapse: collapse; font-size: 12px; border: 1px solid var(--border); }
+  .conflict-table th { text-align: left; padding: 6px 8px; background: var(--surface-2); font-weight: 500; }
+  .conflict-table td { padding: 5px 8px; border-top: 1px solid var(--border); }
+
+  #connError {
+    display: none;
+    position: fixed; inset: 0;
+    background: var(--bg);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-align: center;
+  }
+  #connError code { background: var(--surface-2); padding: 2px 8px; border-radius: 4px; font-size: 13px; }
+</style>
+</head>
+<body data-page-node-id="sCgSq5rSXP21LR8TjcLsn5">
+
+<header data-page-node-id="trsYCdkbB2zwsYtIARBEni">
+  <h1 data-page-node-id="B7tkRJ333fPeRltkO4xIHm">📦 知识图谱工作台</h1>
+  <select id="graphSelect" class="search-box" style="width:auto;max-width:220px;" title="切换图谱（按业务拆分）"></select>
+  <button class="btn" id="btnGraphs" title="管理图谱：新建 / 重命名 / 删除">🗂 图谱</button>
+  <span class="sub" data-page-node-id="613EEEHIOHIbJcDv6dsBcm">SQLite · 多图谱</span>
+  <span class="spacer" data-page-node-id="nHgHHn2ro7450GATVAMnIL"></span>
+  <input class="search-box" id="search" placeholder="搜索节点/标签/描述..." data-page-node-id="qj210QOuWGkTrrC0Ssd5yj">
+  <button class="btn" id="btnAddNode" data-page-node-id="6Ez6jhGl3QbQt6Am14yi3q">+ 节点</button>
+  <button class="btn" id="btnAddEdge" data-page-node-id="oAU32S9uMi8DdUIwHXUDUW">+ 关联</button>
+  <button class="btn" id="btnSaveVersion" data-page-node-id="cDtdn1FiKZDrYcwo8mCFat">💾 保存版本</button>
+  <button class="btn" id="btnVersions" data-page-node-id="W54DDsHJDpDG4S0rl9OynT">🕐 版本</button>
+  <button class="btn" id="btnTrash" title="回收站：已删除的节点/关联/版本/图谱可在此恢复">🗑 回收站</button>
+  <button class="btn" id="btnExport" title="导出JSON(含版本历史)" data-page-node-id="aeZj0OmED97zmZoQiOGAEm">⤓ 导出</button>
+  <button class="btn" id="btnImport" title="从JSON导入(含版本历史)" data-page-node-id="AD3aoVfHSVzowaV7ZVvu6h">⤒ 导入</button>
+  <button class="btn" id="btnSync" title="与另一个实例（云端/本机）双向同步数据">⇄ 同步</button>
+  <input type="file" id="importFile" accept=".json" style="display:none" data-page-node-id="GhGwP7zSVFyJtHhhJxxGE1">
+  <button class="btn danger" id="btnReset" title="重置为初始数据" data-page-node-id="RQD8bGlVpMJtw9vaGFbyzM">↺ 重置</button>
+</header>
+
+<main data-page-node-id="ZFyfEeDRLc86wwVwj85BYK">
+  <aside class="left" id="leftPanel" data-page-node-id="tXcpaOKQiDkpGtAy9Xqogt">
+    <h3 data-page-node-id="95xLYoHV4HBY3PQ3mKGSFl">统计</h3>
+    <div class="stat-row" data-page-node-id="Mfd27NkWnJo1xM30vRCDKG"><span data-page-node-id="Ab7ZQtCBci6CvynbeLRZBT">节点</span><strong id="statNodes" data-page-node-id="cxuCLIlPFGuVXprC8sWsa9">0</strong></div>
+    <div class="stat-row" data-page-node-id="tzKhPOSVhE6mO9A30zwpRF"><span data-page-node-id="7MHFfzY6BYN9IIfSm0h0Qf">关联</span><strong id="statEdges" data-page-node-id="KiViXP4N15OLUzxwHM2o48">0</strong></div>
+    <div class="stat-row" data-page-node-id="GZxEmAtPXyhCDYW7Wu7x4C"><span data-page-node-id="v4fB5Np4kgGssgMI0CMFYi">已选</span><strong id="statSel" data-page-node-id="QmDwtFqHAHxITIwcUzhMqg">未选</strong></div>
+
+    <div class="filter-head" data-page-node-id="juQWvjEcL4gPCxmtZlp0rz">
+      <h3>分类筛选</h3>
+      <span class="mini-links"><a id="catAll" title="显示全部分类">全选</a><a id="catNone" title="一键取消全部分类">全不选</a></span>
+    </div>
+    <div id="catFilter" data-page-node-id="oUwH0qhHQNgNaazNymO8im"></div>
+
+    <div class="filter-head" data-page-node-id="DFuDQpyMoG3j6oFvYleQSi">
+      <h3>关联类型</h3>
+      <span class="mini-links"><a id="relAll" title="清除筛选，显示全部关联">全选</a><a id="relNone" title="一键取消，隐藏全部关联">全不选</a></span>
+    </div>
+    <div id="relFilter" data-page-node-id="KRbITc8n6SsdathMh0G11v"></div>
+
+    <h3 data-page-node-id="biY1h7qgZfO6liS3O1YZv1">视图</h3>
+    <label class="cat-item" data-page-node-id="UAXFK8TNLEwwFu6fmTyscU"><input type="checkbox" id="chkCoreOnly" data-page-node-id="DIMoMmqltPiKsJBSpliai9"> 只看主干关联（权重3）</label>
+  </aside>
+
+  <section class="center" data-page-node-id="Awv5UAiwzZEhK8K2A5Lo1D">
+    <div id="graph" data-page-node-id="HJ88b6594s5CfFzBEnTmEr"></div>
+    <div class="graph-toolbar" data-page-node-id="RGlSdMxTQy0zpCTsSzGUnp">
+      <button class="btn icon" id="btnFit" title="适配视图" data-page-node-id="4OIagsXl7ee8jhlBbOh1sE">⤢</button>
+      <button class="btn icon" id="btnStabilize" title="重新稳定布局" data-page-node-id="Q8M4vEJuayFLqM5flW10dB">⟳</button>
+    </div>
+    <div class="legend" id="legend" data-page-node-id="hZfSC9H78KcTQRcOOidqUL">
+      <div style="font-weight:500;margin-bottom:4px;color:var(--text);" data-page-node-id="6WusJDh4KfdiXyzxntRsh0">使用提示</div>
+      <div data-page-node-id="HbtTOWBWZU002mDRrnSAUX">• 拖拽节点调整位置</div>
+      <div data-page-node-id="NFrrrgfjqleeIgOPJewmYk">• 单击节点看关联 · 双击编辑节点</div>
+      <div data-page-node-id="mHKYgDpNkmgD11UsNTv2Ya">• 单击边看关联详情 · 可编辑/删除/调权重</div>
+      <div data-page-node-id="0jvDJv11vdH6kVnT3xFqgI">• 右键节点弹菜单 · 线越粗=关联越核心</div>
+      <div data-page-node-id="yFjXFTqV0C2140VYx13SDY">• 左侧勾选筛分类 · 顶部搜索</div>
+    </div>
+  </section>
+
+  <aside class="right empty" id="rightPanel" data-page-node-id="haxjz9rEmlu6YnYK8f8StO">
+    <div data-page-node-id="BRt3hrCz2hBOdLldda0uGs">👈 在图中选择一个节点或关联查看详情</div>
+  </aside>
+</main>
+
+<div class="status-bar" data-page-node-id="UQMDvrMtvwiCUL7Ojo1X06">
+  <span data-page-node-id="wpNU4v3rIrBvDKvoDIuSXh"><span class="status-dot" data-page-node-id="WrJAqRRda0iHNV3D2q0dnC"></span>数据存储: SQLite (knowledge_graph.db) · 服务端自动备份</span>
+  <span id="versionInfo" data-page-node-id="YtRs1l0IpD8aTAfeuwBOyv">当前: 初始数据</span>
+  <span class="spacer" style="flex:1" data-page-node-id="WFtqfQALi6wEn5jCRXZpIX"></span>
+  <span id="presenceInfo">👥 在线检查中…</span>
+  <button class="btn ghost" id="btnRename" title="修改你的显示名（多人协作时展示）">👤</button>
+  <span data-page-node-id="KaXvo1TNcAoAnTeQ3KBuKF">ESC 关弹窗 · Delete 删除选中项</span>
+</div>
+
+<!-- Add/Edit Node Modal -->
+<div class="modal-backdrop" id="nodeModal" data-page-node-id="fmBNMkxYUyJqJlzTGnQlty">
+  <div class="modal" data-page-node-id="puWhcw0MzsL3v8BCtIWk8R">
+    <div class="modal-header" data-page-node-id="NQWJJvAGGGEEVDiilfFk9o">
+      <h2 id="nodeModalTitle" data-page-node-id="YBjGcNZatYkRHNzS1wreo0">新增节点</h2>
+      <button class="btn ghost" onclick="closeModal('nodeModal')" data-page-node-id="NMjAxxF39ddWrMLTm1X1W0">✕</button>
+    </div>
+    <div class="modal-body" data-page-node-id="CCHWQSPudZ1U3EwxpV6PK2">
+      <div class="form-row" data-page-node-id="UDT2FrlEdkkY9S4VCCIL8g">
+        <label data-page-node-id="kGDqEKLV4HAGG41kNfa9GN">名称 *</label>
+        <input type="text" id="nName" placeholder="例如：海运整柜 FCL" data-page-node-id="H4Ip75uDH9RcOKECRtu9sg">
+      </div>
+      <div class="form-row" data-page-node-id="TK6sam80pZP8sWP7VElMHm">
+        <label data-page-node-id="NZMQtYqLs5hlTSEHACniCH">分类 *</label>
+        <select id="nCategory" data-page-node-id="D7wOFPou8NdpBpaM7rr26e"></select>
+      </div>
+      <div class="form-row" data-page-node-id="DHUoGV36rsIM208j9KPYxe">
+        <label data-page-node-id="opCO3N3XBDWpmLR40yZqE7">描述</label>
+        <textarea id="nDesc" placeholder="对这个知识点的解释..."></textarea>
+      </div>
+      <div class="form-row" data-page-node-id="NQf4TfOLH2a72HN8TiRYeH">
+        <label data-page-node-id="QOr0mty98EabgsOGudB393">标签 (逗号分隔)</label>
+        <input type="text" id="nTags" placeholder="例如：核心,运输" data-page-node-id="N8HNhxWNN8WiPyn4d8fztu">
+      </div>
+    </div>
+    <div class="modal-footer" data-page-node-id="qG7ctqQ14oiqdQT4lHLSQw">
+      <button class="btn" onclick="closeModal('nodeModal')" data-page-node-id="k2rbVt2YbUPpkk8wDh5Wlh">取消</button>
+      <button class="btn primary" id="nodeSaveBtn" data-page-node-id="IzvDe4FO2Dc3YOLiWo5g2i">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Edge Modal -->
+<div class="modal-backdrop" id="edgeModal" data-page-node-id="4YBxdeQp1JW3GRJysX0UBk">
+  <div class="modal" data-page-node-id="3yVrrMqZFGVplzpmDm8IPr">
+    <div class="modal-header" data-page-node-id="jm873XbfIrtT1woTAA5Ulu">
+      <h2 id="edgeModalTitle" data-page-node-id="E4Do7rntMFoh6ajRMsNXg1">新增关联</h2>
+      <button class="btn ghost" onclick="closeModal('edgeModal')" data-page-node-id="bYrWpAnBOZ1xZZfEme9ejD">✕</button>
+    </div>
+    <div class="modal-body" data-page-node-id="zqa5Nnx93jj0ktP2BlLDLz">
+      <div class="form-row" data-page-node-id="cZ9dmV0qRfmOVkuiLLX8HQ">
+        <label data-page-node-id="EFsyxBmfo6jeJb3bPF3S5b">起点 *（可输入关键词筛选）</label>
+        <div class="combo">
+          <input type="text" class="combo-input" id="eSourceInput" placeholder="输入名称或分类筛选…" autocomplete="off">
+          <div class="combo-list" id="eSourceList"></div>
+          <select id="eSource" style="display:none" data-page-node-id="3ALdG3k7aWdozp1ODsOq3T"></select>
+        </div>
+      </div>
+      <div class="form-row" data-page-node-id="l8KmUfC5CzSgzmx4dWAHbT">
+        <label data-page-node-id="YAfHexMwPHMpDk4O7vaPMO">终点 *（可输入关键词筛选）</label>
+        <div class="combo">
+          <input type="text" class="combo-input" id="eTargetInput" placeholder="输入名称或分类筛选…" autocomplete="off">
+          <div class="combo-list" id="eTargetList"></div>
+          <select id="eTarget" style="display:none" data-page-node-id="ZbmM3wW0Xb7jNkiGQprBQV"></select>
+        </div>
+      </div>
+      <div class="form-row" data-page-node-id="z2WJXCcA1yyffaWT777Blv">
+        <label data-page-node-id="OQanefCwXTRxh5hP1JVtOR">关系类型 *（可筛选可自定义）</label>
+        <div class="combo">
+          <input type="text" class="combo-input" id="eRelation" placeholder="输入筛选，或直接输入自定义关系" autocomplete="off" data-page-node-id="AT2yIs9tV3ltCexdbQERYo">
+          <div class="combo-list" id="eRelationList"></div>
+        </div>
+      </div>
+      <div class="form-row" data-page-node-id="FIrTWwKMLXY9LMEQfT7skH">
+        <label data-page-node-id="E2sxbE7RmNKA6Z59A3LQvO">关系强度权重</label>
+        <select id="eWeight" data-page-node-id="osEoqPD8DwsD945A03ozS9">
+          <option value="3" data-page-node-id="G2mIFDIXRxPq4YdF7pCCDt">3 · 核心主干（粗线）</option>
+          <option value="2" selected data-page-node-id="RCGLPGxs6Rh3RpRwmvJJm6">2 · 一般</option>
+          <option value="1" data-page-node-id="m5HweyVecYe7n3gyUDhboC">1 · 弱关联（虚线）</option>
+        </select>
+      </div>
+      <div class="form-row" data-page-node-id="ZsDekAk8knX4ndLfwFKcFp">
+        <label data-page-node-id="bEz6vPucAFtDH5QqaC6GBA">说明 (可选)</label>
+        <input type="text" id="eDesc" placeholder="补充说明" data-page-node-id="AtGNqMKWrXYmtwvMFSGuMe">
+      </div>
+    </div>
+    <div class="modal-footer" data-page-node-id="AqDYviDAvBMoZwKxWHBXXt">
+      <button class="btn" onclick="closeModal('edgeModal')" data-page-node-id="yp615sb99vrL5YnctJPGoZ">取消</button>
+      <button class="btn primary" id="edgeSaveBtn" data-page-node-id="Z6YgZUOVVLhZushWOT6Nu3">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Save Version Modal -->
+<div class="modal-backdrop" id="versionModal" data-page-node-id="WJKJE6cAeVEIZfoLXdDH95">
+  <div class="modal" data-page-node-id="HOw6VFoBSkNE58SeYg6FXs">
+    <div class="modal-header" data-page-node-id="3QGKcUJcjuGvd3X03iTswu">
+      <h2 data-page-node-id="bnuHOjmyOHuxZcltBgMmjJ">保存当前版本</h2>
+      <button class="btn ghost" onclick="closeModal('versionModal')" data-page-node-id="UKWnWdwYc3GvEJWfLzUVFK">✕</button>
+    </div>
+    <div class="modal-body" data-page-node-id="IrytHHfexuW4xatQpOA6ey">
+      <div class="form-row" data-page-node-id="AvbQbvD6zgHpz4zWIDElB1">
+        <label data-page-node-id="1tS0t7Tyvqp7qPb1HoZf0e">版本名称 *</label>
+        <input type="text" id="vName" placeholder="例如：v1.0 完整版 / 加入电商专题" data-page-node-id="28dZKB7HrAfVG05Wuf3bO7">
+      </div>
+      <div class="form-row" data-page-node-id="LWNuochKk6zIynbEMajwhq">
+        <label data-page-node-id="RKtf3V4VXSi8gdHzZc4Yra">备注 (可选)</label>
+        <textarea id="vDesc" placeholder="本次修改说明..."></textarea>
+      </div>
+      <div class="form-row" data-page-node-id="A7gdgpCJG4CeWKQzOqXzrP">
+        <label data-page-node-id="i02DQd2JAbFhWaSmdcnwEn">生效时间 (可选)</label>
+        <input type="datetime-local" id="vFrom" data-page-node-id="YOgCc3fdPItgRcIANgWC85">
+      </div>
+      <div class="form-row" data-page-node-id="lIirrFVbWBZOOXLjosh3DC">
+        <label data-page-node-id="XLZkxsbxGbE84XTj9yeiyb">失效时间 (可选 · 必须先填生效时间，且须晚于生效时间)</label>
+        <input type="datetime-local" id="vTo" data-page-node-id="C7fc4Py2ZF5hamCjacNg7x">
+      </div>
+      <div class="form-row" id="vStats" style="color:var(--text-2);" data-page-node-id="ZyxBTZIzEnVsJzx4W0qGGY"></div>
+    </div>
+    <div class="modal-footer" data-page-node-id="SeNUF7aiNxxnsT3EnTWHdN">
+      <button class="btn" onclick="closeModal('versionModal')" data-page-node-id="E7e05BaAsg56mKsi5cVBNx">取消</button>
+      <button class="btn primary" id="vSaveBtn" data-page-node-id="s0tyPWnYDqOMmvGOhkSHcn">保存版本</button>
+    </div>
+  </div>
+</div>
+
+<!-- Versions List Modal -->
+<div class="modal-backdrop" id="versionsListModal" data-page-node-id="WRg9GaxjTdl9pxbHM73cAD">
+  <div class="modal wide" data-page-node-id="4r04srhKPaf3fWlvtA0jH6">
+    <div class="modal-header" data-page-node-id="vPzC7R5NtDkP0KFgEstCn1">
+      <h2 data-page-node-id="UCQCkYo2eECRKxz9827s1m">版本历史</h2>
+      <button class="btn ghost" onclick="closeModal('versionsListModal')" data-page-node-id="JbYdYU3rLCjvysfxn0bYPr">✕</button>
+    </div>
+    <div class="modal-body" data-page-node-id="cXrPnmuxYUn6LJ0ASeyKEJ">
+      <div style="display:flex;gap:8px;margin-bottom:12px;" data-page-node-id="OG3IZMqjE6EfHtJLEu3aPa">
+        <select id="vFilterStatus" class="search-box" style="width:auto;" data-page-node-id="ZmLuN3fzHizGZ6itJ6eevs">
+          <option value="all" data-page-node-id="IhmaKSPABXzJTU3WJSqLVs">全部状态</option>
+          <option value="生效中" data-page-node-id="ltwZF0uPWEGQU6thY1nXN2">生效中</option>
+          <option value="未生效" data-page-node-id="mpFboBe75YsheLqxhfXeum">未生效</option>
+          <option value="已失效" data-page-node-id="JnLg8Sm2HykMu1b4UmiaZy">已失效</option>
+          <option value="未指定" data-page-node-id="9H3jiQBbUIjx0rB2qOZQmI">未指定</option>
+        </select>
+        <input id="vFilterKw" class="search-box" style="flex:1;width:auto;" placeholder="搜索版本名/备注..." data-page-node-id="qy3gcWJvWiECQOaEXoJmHM">
+      </div>
+      <div id="versionsList" data-page-node-id="8nlNVlZeF3FeYvmvMdjKBg"></div>
+      <div id="backupsSection" data-page-node-id="w2ukO7iYS1Sw8SpBzFKQwc"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Version Modal -->
+<div class="modal-backdrop" id="editVersionModal" data-page-node-id="qRoWnMAXNjGbVKioyyK1q3">
+  <div class="modal" data-page-node-id="oC07FEMrtQ6tfDuxK30HzS">
+    <div class="modal-header" data-page-node-id="zwov3NvonWuro0qDQrF7lz">
+      <h2 data-page-node-id="sgg1LG2iRmM7qXMKDpH4CT">编辑版本</h2>
+      <button class="btn ghost" onclick="closeModal('editVersionModal')" data-page-node-id="aCdSOaIxy0rGPy8sBJodFl">✕</button>
+    </div>
+    <div class="modal-body" data-page-node-id="fUgTT1aAVbWeNdjmhXLdl8">
+      <input type="hidden" id="evId" data-page-node-id="AZJUnG280NJbEiqlv2qFc7">
+      <div class="form-row" data-page-node-id="OLBPyGNAVPrL1Je7Y35gkE">
+        <label data-page-node-id="t85vOjBsxi2FNvBYguVfUl">版本名称 *</label>
+        <input type="text" id="evName" data-page-node-id="WXMCOjvOIqNvCQSEcsYnOk">
+      </div>
+      <div class="form-row" data-page-node-id="KVtyYZJf6McNPlCgDpbhWR">
+        <label data-page-node-id="Wx1hqJe0D4nJ1WjEQfyOwU">备注</label>
+        <textarea id="evDesc"></textarea>
+      </div>
+      <div class="form-row" data-page-node-id="K0dxp8WMfcH9jgPVi01EFE">
+        <label data-page-node-id="HtOYABZtGc9I8tgARM0Ijd">生效时间 (可选)</label>
+        <input type="datetime-local" id="evFrom" data-page-node-id="hh9aolWtArUs3ONwq5SAjV">
+      </div>
+      <div class="form-row" data-page-node-id="LMx2Hwy2ZDPiH6Ob4ZBVKu">
+        <label data-page-node-id="jDmYYTa28fqES5QvwaTLNL">失效时间 (可选 · 必须先填生效时间)</label>
+        <input type="datetime-local" id="evTo" data-page-node-id="EjHkrQ5WijBffKKpkLNGOf">
+      </div>
+    </div>
+    <div class="modal-footer" data-page-node-id="7yEj7fopbA9UFsh1BoZxtd">
+      <button class="btn" onclick="closeModal('editVersionModal')" data-page-node-id="R5byFZJwIg0FM6Ae7vKzQ9">取消</button>
+      <button class="btn primary" onclick="saveEditVersion()" data-page-node-id="LzeP2bDulcRhLm1gIof6Yv">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Context menu -->
+<div class="context-menu" id="ctxMenu" data-page-node-id="NERXi6SIS1wW5dWLKVj2UR">
+  <div class="ctx-item" data-action="edit" data-page-node-id="GvmPd9KKn8NJEncwiE2PFe">✎ 编辑</div>
+  <div class="ctx-item" data-action="addRel" data-page-node-id="3rnvXXMLgJvmg4f1N6HyM3">↔ 新增关联到此节点</div>
+  <div class="ctx-item" data-action="focus" data-page-node-id="XAm1esG3bLukFIKONqDqdw">🔍 聚焦关联</div>
+  <div class="ctx-divider" data-page-node-id="93FjBpxoRNIFHyCTTpYWSD"></div>
+  <div class="ctx-item danger" data-action="delete" data-page-node-id="zuH5JOXCb01bczMKN8XdXl">🗑 删除</div>
+</div>
+
+<div id="syncBanner">
+  🔄 他人已更新了图谱数据
+  <button class="btn" onclick="applyRemoteChanges()">立即同步</button>
+  <button class="btn ghost" onclick="hideSyncBanner()">稍后</button>
+</div>
+
+<!-- Conflict Modal -->
+<div class="modal-backdrop" id="conflictModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>⚠️ 编辑冲突</h2>
+      <button class="btn ghost" onclick="closeModal('conflictModal')">✕</button>
+    </div>
+    <div class="modal-body" id="conflictBody"></div>
+    <div class="modal-footer">
+      <button class="btn" id="conflictTakeTheirs">采用最新数据（放弃我的修改）</button>
+      <button class="btn primary" id="conflictTakeMine">用我的版本覆盖</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sync Modal（实例间同步） -->
+<div class="modal-backdrop" id="syncModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>⇄ 实例间同步</h2>
+      <button class="btn ghost" onclick="closeModal('syncModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label>对端实例地址</label>
+        <input type="text" id="syncUrl" placeholder="例如：https://xxxx.app.workbuddy.link 或 http://127.0.0.1:8765">
+      </div>
+      <div style="font-size:12px;color:var(--text-2);margin-bottom:12px;line-height:1.6;">
+        同步 = 用一方的<b>全量数据</b>（节点+关联+版本历史）<b>整体替换</b>另一方，不是按条合并。<br>
+        双方服务端都有自动备份（最近15条），替换错了可到「🕐 版本」面板底部恢复。<br>
+        方向说明：<b>本机页面 ⇄ 云端</b> 两个方向都通；在<b>云端页面</b>上无法访问你本机的 127.0.0.1 地址。
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn" id="btnSyncPull">⤓ 从对端拉取 → 替换本页数据</button>
+        <button class="btn primary" id="btnSyncPush">⤒ 推送本页数据 → 替换对端</button>
+      </div>
+      <div id="syncPreview" style="margin-top:14px;font-size:12px;line-height:1.8;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Double-Check Modal（所有删除 / 覆盖操作的二次确认） -->
+<div class="modal-backdrop" id="deleteConfirmModal">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <h2 id="delTitle">⚠️ 确认删除</h2>
+      <button class="btn ghost" onclick="closeModal('deleteConfirmModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="delDetail" style="font-size:13px;line-height:1.8;color:var(--text);"></div>
+      <div id="delHint" style="font-size:12px;color:var(--text-2);margin-top:10px;line-height:1.6;">删除为<b>逻辑删除</b>：数据进入回收站，可随时恢复。</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('deleteConfirmModal')">取消</button>
+      <button class="btn danger" id="delConfirmBtn">确认删除</button>
+    </div>
+  </div>
+</div>
+
+<!-- Trash Modal（回收站） -->
+<div class="modal-backdrop" id="trashModal">
+  <div class="modal wide">
+    <div class="modal-header">
+      <h2>🗑 回收站（逻辑删除，可恢复）</h2>
+      <button class="btn ghost" onclick="closeModal('trashModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="font-size:12px;color:var(--text-2);">删除的一切都在这里，恢复即回到原位（节点恢复时其关联一并恢复）。</span>
+        <button class="btn danger" id="btnTrashEmpty">清空回收站</button>
+      </div>
+      <div id="trashList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Graphs Manage Modal -->
+<div class="modal-backdrop" id="graphsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>🗂 图谱管理（按业务拆分）</h2>
+      <button class="btn ghost" onclick="closeModal('graphsModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <input class="search-box" id="gNewName" style="flex:1;width:auto;" placeholder="新图谱名称，例如：催收APP · 监控体系" maxlength="40">
+        <button class="btn primary" id="gCreateBtn">＋ 新建</button>
+      </div>
+      <div id="graphsList"></div>
+      <div style="font-size:11px;color:var(--text-3);margin-top:12px;line-height:1.6;">
+        每个图谱拥有独立的节点/关联/版本历史/自动备份；导出 JSON 会包含全部图谱。
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" data-page-node-id="gp8O3jTWvRW0lksHSYvC3M"></div>
+
+<div id="connError" data-page-node-id="zwGNgVOCVWU73JxkrHGPaF">
+  <div style="font-size:15px;font-weight:500;" data-page-node-id="HcMAssleyG7I9GOHqira1X">⚠️ 无法连接后端服务</div>
+  <div style="color:var(--text-2);" data-page-node-id="Pod4P9AY5JvBGeJsmk2w3R">请在终端运行 <code data-page-node-id="yEEW2jBTJfYZ2oiDuFyY9o">python3 server.py</code></div>
+  <div style="color:var(--text-3);font-size:12px;" data-page-node-id="ug20TjTQr89KUQhNI900A4">然后访问 http://127.0.0.1:8765</div>
+</div>
+
+<script src="/vis-network.min.js"></script>
+<script>
+/* ===========================================================
+   分类与配色
+   =========================================================== */
+const CATEGORIES = {
+  '概念':     { color: '#534ab7', shape: 'ellipse' },
+  '术语':     { color: '#0f6e56', shape: 'box' },
+  'Incoterms':{ color: '#993556', shape: 'diamond' },
+  '运输':     { color: '#ba7517', shape: 'triangle' },
+  '参与者':   { color: '#185fa5', shape: 'dot' },
+  '流程':     { color: '#378add', shape: 'square' },
+  '单证':     { color: '#993c1d', shape: 'square' },
+  '关务':     { color: '#a32d2d', shape: 'hexagon' },
+  '仓储':     { color: '#3b6d11', shape: 'database' },
+  '支付':     { color: '#854f0b', shape: 'star' },
+  '风险':     { color: '#791f1f', shape: 'triangleDown' },
+  '系统':     { color: '#378add', shape: 'box' },
+  '指标':     { color: '#0f6e56', shape: 'dot' },
+  '趋势':     { color: '#3c3489', shape: 'star' },
+  '模式':     { color: '#5f5e5a', shape: 'ellipse' },
+};
+
+/* ===========================================================
+   后端 API（SQLite 存储，前端不落本地缓存）
+   =========================================================== */
+let lastDataVersion = null;   // 全局数据版本号，用于多人变更同步
+let syncingRemote = false;
+
+const API = {
+  async get(path) {
+    const r = await fetch(path);
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
+    return r.json();
+  },
+  async send(method, path, body) {
+    const r = await fetch(path, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      const err = new Error(data.error || r.statusText);
+      err.status = r.status;
+      err.data = data;
+      throw err;
+    }
+    if (data && typeof data.dataVersion === 'number') lastDataVersion = data.dataVersion;
+    return data;
+  },
+};
+
+async function syncState() {
+  const qs = state.graphId ? '?graph=' + encodeURIComponent(state.graphId) : '';
+  let s;
+  try {
+    s = await API.get('/api/state' + qs);
+  } catch (e) {
+    // 当前图谱可能被他人删除 → 回退到第一个图谱
+    state.graphId = null;
+    s = await API.get('/api/state');
+  }
+  state.graphId = s.currentGraph;
+  state.graphs = s.graphs || [];
+  state.nodes = s.nodes;
+  state.edges = s.edges;
+  state.versions = s.versions;
+  state.backups = s.backups;
+  state.currentVersion = s.currentVersion;
+  renderGraphSelect();
+}
+
+/* ===========================================================
+   状态
+   =========================================================== */
+let state = {
+  graphId: null,            // 当前图谱（按业务拆分）
+  graphs: [],               // 全部图谱列表
+  nodes: [],
+  edges: [],
+  versions: [],
+  backups: [],
+  currentVersion: '初始数据',
+  selectedId: null,
+  selectedEdgeId: null,
+  search: '',
+  filterCats: new Set(Object.keys(CATEGORIES)),
+  filterRels: new Set(),
+  showCoreOnly: false,
+  editingNodeId: null,
+  editingEdgeId: null,
+  editingNodeBase: null,    // 乐观锁基线：打开编辑时的 updatedAt
+  editingEdgeBase: null,
+  presenceEditing: null,    // 心跳广播：{type:'node'|'edge', id}
+  online: [],               // 在线用户列表（服务端返回）
+  contextNodeId: null,
+};
+
+/* ===========================================================
+   多人协作 · 身份 / 心跳 / 变更同步
+   （localStorage 只存显示名等 UI 偏好，图谱数据全在 SQLite）
+   =========================================================== */
+const PALETTE = ['#534ab7', '#0f6e56', '#993556', '#ba7517', '#185fa5', '#3b6d11', '#a32d2d', '#378add'];
+const me = (() => {
+  const id = localStorage.getItem('kg_clientId') || ('c' + Math.random().toString(36).slice(2, 10));
+  localStorage.setItem('kg_clientId', id);
+  const name = localStorage.getItem('kg_name') || ('用户-' + (1000 + Math.floor(Math.random() * 9000)));
+  localStorage.setItem('kg_name', name);
+  const color = localStorage.getItem('kg_color') || PALETTE[Math.floor(Math.random() * PALETTE.length)];
+  localStorage.setItem('kg_color', color);
+  return { clientId: id, name, color };
+})();
+
+function othersEditing(type, id) {
+  return (state.online || []).filter(o =>
+    o.clientId !== me.clientId && o.editing && o.editing.type === type && o.editing.id === id);
+}
+
+function renderPresence() {
+  const el = document.getElementById('presenceInfo');
+  const online = state.online || [];
+  const others = online.filter(o => o.clientId !== me.clientId);
+  const chips = [`<span class="presence-chip" style="background:${me.color}">${escapeHtml(me.name)}（我）</span>`]
+    .concat(others.map(o => {
+      let mark = '';
+      if (o.editing && o.editing.type === 'node') {
+        if (o.editing.graph && o.editing.graph !== state.graphId) {
+          mark = ' ✎（另一图谱）';
+        } else {
+          const n = state.nodes.find(x => x.id === o.editing.id);
+          mark = n ? ` ✎${escapeHtml(n.label)}` : ' ✎';
+        }
+      } else if (o.editing) mark = ' ✎';
+      return `<span class="presence-chip" style="background:${o.color}">${escapeHtml(o.name)}${mark}</span>`;
+    }));
+  el.innerHTML = `👥 在线 ${online.length} 人：${chips.join(' ')}`;
+}
+
+async function applyRemoteChanges() {
+  hideSyncBanner();
+  if (syncingRemote) return;
+  syncingRemote = true;
+  try {
+    await syncState();
+    refresh();
+    renderDetail();
+  } finally { syncingRemote = false; }
+}
+
+function showSyncBanner() { document.getElementById('syncBanner').style.display = 'block'; }
+function hideSyncBanner() { document.getElementById('syncBanner').style.display = 'none'; }
+
+async function heartbeat() {
+  try {
+    const r = await API.send('POST', '/api/presence', {
+      clientId: me.clientId, name: me.name, color: me.color,
+      editing: state.presenceEditing,
+    });
+    state.online = r.online || [];
+    renderPresence();
+    if (lastDataVersion === null) { lastDataVersion = r.dataVersion; return; }
+    if (r.dataVersion !== lastDataVersion) {
+      lastDataVersion = r.dataVersion;
+      const modalOpen = document.querySelector('.modal-backdrop.open');
+      if (modalOpen) showSyncBanner();
+      else await applyRemoteChanges();
+    }
+  } catch (e) { /* 后端未启动时静默 */ }
+}
+
+let network = null;
+
+/* ===========================================================
+   工具
+   =========================================================== */
+function escapeHtml(s) { return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  if (id === 'nodeModal' || id === 'edgeModal') state.presenceEditing = null;
+}
+function genId() { return 'n' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+/* 版本生命周期：生效/失效 */
+function versionStatus(v) {
+  const now = Date.now();
+  const from = v.effectiveFrom ? new Date(v.effectiveFrom).getTime() : null;
+  const to = v.effectiveTo ? new Date(v.effectiveTo).getTime() : null;
+  if (!from && !to) return '未指定';
+  if (from && now < from) return '未生效';
+  if (to && now > to) return '已失效';
+  return '生效中';
+}
+const STATUS_BADGE = {
+  '生效中': 'v-badge v-active',
+  '未生效': 'v-badge v-future',
+  '已失效': 'v-badge v-expired',
+  '未指定': 'v-badge v-none',
+};
+function fmtLocal(dt) {
+  if (!dt) return '—';
+  return new Date(dt).toLocaleString('zh-CN', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' });
+}
+function toLocalInput(iso) {
+  const d = new Date(iso);
+  const p = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+function overlapCount(vers, v) {
+  if (!v.effectiveFrom || !v.effectiveTo) return 0;
+  const f = new Date(v.effectiveFrom).getTime(), t = new Date(v.effectiveTo).getTime();
+  return vers.filter(o => o.id !== v.id && o.effectiveFrom && o.effectiveTo &&
+    new Date(o.effectiveFrom).getTime() < t && new Date(o.effectiveTo).getTime() > f).length;
+}
+function validateWindow(fromVal, toVal) {
+  if (toVal && !fromVal) return '有失效限制必须有生效时间';
+  if (fromVal && toVal && new Date(toVal) <= new Date(fromVal)) return '失效时间必须晚于生效时间';
+  return null;
+}
+
+/* ===========================================================
+   多图谱管理（按业务拆分）
+   =========================================================== */
+function renderGraphSelect() {
+  const sel = document.getElementById('graphSelect');
+  sel.innerHTML = state.graphs.map(g =>
+    `<option value="${g.id}" ${g.id === state.graphId ? 'selected' : ''}>${escapeHtml(g.name)}</option>`
+  ).join('');
+}
+
+async function switchGraph(gid) {
+  if (!gid || gid === state.graphId) return;
+  state.graphId = gid;
+  state.selectedId = null;
+  state.selectedEdgeId = null;
+  try {
+    await syncState();
+    refresh();
+    renderDetail();
+    const g = state.graphs.find(x => x.id === gid);
+    toast('已切换到「' + (g ? g.name : '图谱') + '」');
+  } catch (e) { toast('切换失败: ' + e.message); }
+}
+
+function openGraphsModal() {
+  document.getElementById('gNewName').value = '';
+  renderGraphsList();
+  openModal('graphsModal');
+  setTimeout(() => document.getElementById('gNewName').focus(), 50);
+}
+
+function renderGraphsList() {
+  const list = document.getElementById('graphsList');
+  if (!state.graphs.length) {
+    list.innerHTML = '<div style="color:var(--text-3);text-align:center;padding:24px;">暂无图谱</div>';
+    return;
+  }
+  list.innerHTML = state.graphs.map(g => `
+    <div class="version-item">
+      <div class="version-info">
+        <div class="version-name">${escapeHtml(g.name)}${g.id === state.graphId ? '<span class="v-badge v-active">当前</span>' : ''}</div>
+        <div class="version-meta">${g.nodeCount} 节点 · ${g.edgeCount} 关联${g.descr ? ' · ' + escapeHtml(g.descr) : ''}</div>
+      </div>
+      <div class="version-actions">
+        ${g.id !== state.graphId ? `<button class="btn" onclick="switchGraph('${g.id}')">切换</button>` : ''}
+        <button class="btn" onclick="renameGraph('${g.id}')" title="重命名">✎</button>
+        <button class="btn danger" onclick="deleteGraph('${g.id}')" title="删除">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function createGraph() {
+  const name = document.getElementById('gNewName').value.trim();
+  if (!name) { toast('请输入图谱名称'); return; }
+  try {
+    const r = await API.send('POST', '/api/graphs', { name });
+    document.getElementById('gNewName').value = '';
+    state.graphId = r.id;
+    state.selectedId = null;
+    state.selectedEdgeId = null;
+    await syncState();
+    refresh(); renderDetail();
+    closeModal('graphsModal');
+    toast('已创建并切换到「' + name + '」');
+  } catch (e) { toast('创建失败: ' + e.message); }
+}
+
+async function renameGraph(id) {
+  const g = state.graphs.find(x => x.id === id);
+  if (!g) return;
+  const name = prompt('重命名图谱：', g.name);
+  if (!name || !name.trim() || name.trim() === g.name) return;
+  try {
+    await API.send('PUT', '/api/graphs/' + id, { name: name.trim() });
+    await syncState();
+    refresh();
+    renderGraphsList();
+    toast('已重命名');
+  } catch (e) { toast('重命名失败: ' + e.message); }
+}
+
+async function deleteGraph(id) {
+  const g = state.graphs.find(x => x.id === id);
+  if (!g) return;
+  askDelete({
+    title: '⚠️ 删除图谱',
+    detail: `将删除图谱 <b>「${escapeHtml(g.name)}」</b> 及其全部 ${g.nodeCount} 节点 / ${g.edgeCount} 关联与版本历史。`,
+    hint: '整个图谱为<b>逻辑删除</b>：进入回收站，可整体恢复。',
+    onOk: async () => {
+      try {
+        await API.send('DELETE', '/api/graphs/' + id);
+        toast('图谱已移入回收站，可在「🗑 回收站」恢复');
+        if (state.graphId === id) { state.graphId = null; state.selectedId = null; state.selectedEdgeId = null; }
+        await syncState();
+        refresh(); renderDetail();
+        renderGraphsList();
+      } catch (e) { toast('删除失败: ' + e.message); }
+    },
+  });
+}
+
+/* ===========================================================
+   vis-network 数据转换
+   =========================================================== */
+function buildVisData() {
+  const visNodes = state.nodes
+    .filter(n => state.filterCats.has(n.category))
+    .map(n => {
+      const cat = CATEGORIES[n.category] || { color: '#5f5e5a', shape: 'ellipse' };
+      const match = state.search && (
+        n.label.toLowerCase().includes(state.search) ||
+        (n.desc||'').toLowerCase().includes(state.search) ||
+        (n.tags||[]).some(t => t.toLowerCase().includes(state.search))
+      );
+      const dimmed = state.search && !match;
+      return {
+        id: n.id,
+        label: n.label,
+        title: `${n.label}\n[${n.category}] ${n.desc||''}\n标签: ${(n.tags||[]).join(' / ')}`,
+        shape: cat.shape,
+        color: {
+          background: dimmed ? '#f1efe8' : cat.color + '22',
+          border: dimmed ? '#d3d1c7' : cat.color,
+          highlight: { background: cat.color + '44', border: cat.color },
+        },
+        font: { color: dimmed ? '#b4b2a9' : '#1a1a17', size: 13, face: 'inherit' },
+        borderWidth: 1.5,
+        margin: 8,
+        widthConstraint: { maximum: 140 },
+      };
+    });
+
+  const allowedIds = new Set(visNodes.map(n => n.id));
+  const visEdges = state.edges
+    .filter(ed => allowedIds.has(ed.source) && allowedIds.has(ed.target))
+    .filter(ed => state.filterRels.size === 0 || state.filterRels.has(ed.relation))
+    .filter(ed => !state.showCoreOnly || (ed.weight || 2) >= 3)
+    .map(ed => {
+      const w = ed.weight || 2;
+      const dimmed = state.search && !(
+        String(ed.relation).toLowerCase().includes(state.search)
+      );
+      return {
+        id: ed.id,
+        from: ed.source,
+        to: ed.target,
+        label: ed.relation + (w === 3 ? ' ●' : ''),
+        title: `权重 ${w} · 单击边查看详情`,
+        arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+        font: { size: 10, color: dimmed ? '#d3d1c7' : (w === 3 ? '#3c3489' : '#5f5e5a'), strokeWidth: 3, strokeColor: '#fafaf7', align: 'middle' },
+        color: { color: dimmed ? '#e5e3da' : (w === 3 ? '#534ab7' : '#b4b2a9'), highlight: '#a32d2d' },
+        width: w === 3 ? 4 : (w === 2 ? 1.5 : 1),
+        dashes: w === 1,
+        smooth: { type: 'continuous' },
+      };
+    });
+
+  return { nodes: visNodes, edges: visEdges };
+}
+
+function refresh() {
+  const data = buildVisData();
+  if (!network) {
+    network = new vis.Network(document.getElementById('graph'), data, {
+      nodes: { borderWidth: 1.5 },
+      edges: { smooth: { type: 'continuous' } },
+      physics: {
+        enabled: true,
+        solver: 'forceAtlas2Based',
+        forceAtlas2Based: { gravitationalConstant: -50, springLength: 120, springConstant: 0.08, avoidOverlap: 0.6 },
+        stabilization: { iterations: 200, fit: true },
+      },
+      interaction: { hover: true, dragNodes: true, dragView: true, zoomView: true, navigationButtons: false, tooltipDelay: 150 },
+      layout: { improvedLayout: true },
+    });
+    setupNetworkEvents();
+  } else {
+    network.setData(data);
+  }
+  document.getElementById('statNodes').textContent = state.nodes.length;
+  document.getElementById('statEdges').textContent = state.edges.length;
+  document.getElementById('versionInfo').textContent = '当前: ' + state.currentVersion;
+  updateFilterPanel();
+}
+
+function setupNetworkEvents() {
+  network.on('selectNode', e => {
+    const id = e.nodes[0];
+    if (id) selectNode(id);
+  });
+  network.on('selectEdge', e => {
+    const eid = e.edges[0];
+    if (eid) selectEdge(eid);
+  });
+  network.on('doubleClick', e => {
+    const id = e.nodes[0];
+    if (id) openNodeModal(id);
+  });
+  network.on('oncontext', e => {
+    e.event.preventDefault();
+    const id = network.getNodeAt(e.pointer.DOM);
+    if (id) {
+      state.contextNodeId = id;
+      selectNode(id);
+      showContextMenu(e.event.clientX, e.event.clientY);
+    }
+  });
+}
+
+/* ===========================================================
+   选中节点 / 关联 → 详情面板
+   =========================================================== */
+function selectNode(id) {
+  state.selectedId = id;
+  state.selectedEdgeId = null;
+  document.getElementById('statSel').textContent = state.nodes.find(n => n.id === id)?.label || '未选';
+  renderDetail();
+  const connected = network.getConnectedNodes(id);
+  network.selectNodes([id, ...connected]);
+}
+
+function selectEdge(eid) {
+  state.selectedEdgeId = eid;
+  state.selectedId = null;
+  document.getElementById('statSel').textContent = '(关联)';
+  renderDetail();
+  network.selectEdges([eid]);
+}
+
+function renderDetail() {
+  if (state.selectedEdgeId) return renderEdgeDetail();
+  renderNodeDetail();
+}
+
+function renderNodeDetail() {
+  const panel = document.getElementById('rightPanel');
+  const n = state.nodes.find(x => x.id === state.selectedId);
+  if (!n) { panel.className = 'right empty'; panel.innerHTML = '<div>👈 在图中选择一个节点或关联查看详情</div>'; return; }
+  const cat = CATEGORIES[n.category] || { color: '#5f5e5a' };
+  const out = state.edges.filter(e => e.source === n.id);
+  const inc = state.edges.filter(e => e.target === n.id);
+  const groupBy = arr => {
+    const m = new Map();
+    arr.forEach(e => {
+      const k = e.relation;
+      if (!m.has(k)) m.set(k, []);
+      m.get(k).push(e);
+    });
+    return Array.from(m.entries());
+  };
+  const outG = groupBy(out);
+  const inG = groupBy(inc);
+
+  let html = `
+    <div class="detail-header">
+      <div>
+        <div class="detail-name">${escapeHtml(n.label)}</div>
+        <span class="detail-cat" style="background:${cat.color}">${escapeHtml(n.category)}</span>
+      </div>
+    </div>
+    <div class="detail-desc">${escapeHtml(n.desc || '（暂无描述）')}</div>
+    ${(n.tags && n.tags.length) ? `<div class="detail-tags">${n.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+    <div class="detail-actions">
+      <button class="btn" onclick="openNodeModal('${n.id}')">✎ 编辑</button>
+      <button class="btn" onclick="focusNode('${n.id}')">🔍 聚焦关联</button>
+      <button class="btn danger" onclick="deleteNode('${n.id}')">🗑 删除</button>
+    </div>
+  `;
+  if (outG.length) {
+    html += `<div class="related-section"><h4>指向其它节点 (${out.length})</h4>`;
+    outG.forEach(([rel, list]) => {
+      html += `<div class="rel-group"><div class="rel-label">${escapeHtml(rel)}</div><div class="rel-list">`;
+      list.forEach(e => {
+        const t = state.nodes.find(x => x.id === e.target);
+        const w = e.weight || 2;
+        const cls = 'rel-chip' + (w === 3 ? ' core' : (w === 1 ? ' weak' : ''));
+        if (t) html += `<span class="${cls}" title="权重 ${w}" onclick="selectEdge('${e.id}')">${escapeHtml(t.label)}</span>`;
+      });
+      html += `</div></div>`;
+    });
+    html += `</div>`;
+  }
+  if (inG.length) {
+    html += `<div class="related-section"><h4>被指向 (${inc.length})</h4>`;
+    inG.forEach(([rel, list]) => {
+      html += `<div class="rel-group"><div class="rel-label">${escapeHtml(rel)}</div><div class="rel-list">`;
+      list.forEach(e => {
+        const s = state.nodes.find(x => x.id === e.source);
+        const w = e.weight || 2;
+        const cls = 'rel-chip in' + (w === 3 ? ' core' : (w === 1 ? ' weak' : ''));
+        if (s) html += `<span class="${cls}" title="权重 ${w}" onclick="selectEdge('${e.id}')">${escapeHtml(s.label)}</span>`;
+      });
+      html += `</div></div>`;
+    });
+    html += `</div>`;
+  }
+  panel.className = 'right';
+  panel.innerHTML = html;
+}
+
+/* 边详情面板（边 CRUD 的读取/入口） */
+function renderEdgeDetail() {
+  const panel = document.getElementById('rightPanel');
+  const ed = state.edges.find(x => x.id === state.selectedEdgeId);
+  if (!ed) { panel.className = 'right empty'; panel.innerHTML = '<div>👈 在图中选择一个节点或关联查看详情</div>'; return; }
+  const s = state.nodes.find(n => n.id === ed.source);
+  const t = state.nodes.find(n => n.id === ed.target);
+  const w = ed.weight || 2;
+  const wName = w === 3 ? '核心主干' : (w === 1 ? '弱关联' : '一般');
+  panel.className = 'right';
+  panel.innerHTML = `
+    <div class="detail-header">
+      <div>
+        <div class="detail-name">↔ ${escapeHtml(ed.relation)}</div>
+        <span class="detail-cat" style="background:var(--primary)">权重 ${w} · ${wName}</span>
+      </div>
+    </div>
+    <div class="detail-desc">
+      <div style="margin-bottom:8px;">起点：<span class="rel-chip" onclick="selectNode('${s ? s.id : ''}')">${escapeHtml(s ? s.label : ed.source)}</span></div>
+      <div>终点：<span class="rel-chip in" onclick="selectNode('${t ? t.id : ''}')">${escapeHtml(t ? t.label : ed.target)}</span></div>
+    </div>
+    ${ed.desc ? `<div class="detail-desc">${escapeHtml(ed.desc)}</div>` : ''}
+    <div class="form-row" style="margin:12px 0;">
+      <label>快速调整权重</label>
+      <select onchange="quickSetWeight(this.value)">
+        <option value="3" ${w === 3 ? 'selected' : ''}>3 · 核心主干</option>
+        <option value="2" ${w === 2 ? 'selected' : ''}>2 · 一般</option>
+        <option value="1" ${w === 1 ? 'selected' : ''}>1 · 弱关联</option>
+      </select>
+    </div>
+    <div class="detail-actions">
+      <button class="btn" onclick="openEdgeModal('${ed.id}')">✎ 编辑</button>
+      <button class="btn danger" onclick="deleteEdge('${ed.id}')">🗑 删除</button>
+    </div>
+  `;
+}
+
+async function quickSetWeight(v) {
+  const w = parseInt(v, 10);
+  const ed = state.edges.find(x => x.id === state.selectedEdgeId);
+  if (!ed || ![1, 2, 3].includes(w)) return;
+  try {
+    await API.send('PUT', '/api/edges/' + ed.id, { weight: w, graphId: state.graphId, baseUpdatedAt: ed.updatedAt });
+    await syncState(); refresh();
+    toast('权重已更新为 ' + w);
+  } catch (e) {
+    if (e.status === 409) {
+      toast('⚠️ 该关联刚被他人修改，已刷新，请重试');
+      await applyRemoteChanges();
+    } else toast('更新失败: ' + e.message);
+  }
+}
+
+function focusNode(id) {
+  const neighbors = new Set([id, ...network.getConnectedNodes(id)]);
+  const data = buildVisData();
+  data.nodes = data.nodes.map(n => ({
+    ...n,
+    color: neighbors.has(n.id) ? n.color : { background: '#f1efe8', border: '#e5e3da' },
+    font: { ...n.font, color: neighbors.has(n.id) ? '#1a1a17' : '#b4b2a9' },
+  }));
+  data.edges = data.edges.map(e => ({
+    ...e,
+    color: { color: '#534ab7', opacity: 0.8 },
+    width: 2,
+  }));
+  network.setData(data);
+  network.fit({ nodes: Array.from(neighbors), animation: { duration: 500, easingFunction: 'easeInOutQuad' } });
+  setTimeout(refresh, 100);
+}
+
+/* ===========================================================
+   筛选面板
+   =========================================================== */
+function updateFilterPanel() {
+  const counts = {};
+  state.nodes.forEach(n => { counts[n.category] = (counts[n.category] || 0) + 1; });
+  const catFilter = document.getElementById('catFilter');
+  catFilter.innerHTML = Object.keys(CATEGORIES).map(cat => `
+    <label class="cat-item">
+      <input type="checkbox" data-cat="${cat}" ${state.filterCats.has(cat) ? 'checked' : ''}>
+      <span class="cat-dot" style="background:${CATEGORIES[cat].color}"></span>
+      <span>${cat}</span>
+      <span class="cat-count">${counts[cat] || 0}</span>
+    </label>
+  `).join('');
+  catFilter.querySelectorAll('input').forEach(cb => {
+    cb.onchange = () => {
+      if (cb.checked) state.filterCats.add(cb.dataset.cat);
+      else state.filterCats.delete(cb.dataset.cat);
+      refresh();
+    };
+  });
+
+  const rels = Array.from(new Set(state.edges.map(e => e.relation)));
+  const relFilter = document.getElementById('relFilter');
+  relFilter.innerHTML = rels.map(rel => `
+    <label class="cat-item">
+      <input type="checkbox" data-rel="${escapeHtml(rel)}" ${state.filterRels.size === 0 || state.filterRels.has(rel) ? 'checked' : ''}>
+      <span>${escapeHtml(rel)}</span>
+    </label>
+  `).join('');
+  relFilter.querySelectorAll('input').forEach(cb => {
+    cb.onchange = () => {
+      if (cb.checked) state.filterRels.delete(cb.dataset.rel);
+      else state.filterRels.add(cb.dataset.rel);
+      refresh();
+    };
+  });
+}
+
+/* ===========================================================
+   节点 CRUD（API 版）
+   =========================================================== */
+function openNodeModal(id) {
+  state.editingNodeId = id || null;
+  state.presenceEditing = id ? { type: 'node', id, graph: state.graphId } : null;
+  const n = id ? state.nodes.find(x => x.id === id) : null;
+  state.editingNodeBase = n ? (n.updatedAt || null) : null;
+  if (id) {
+    const others = othersEditing('node', id);
+    if (others.length) toast('⚠️ ' + others.map(o => o.name).join('、') + ' 也在编辑此节点，注意冲突');
+  }
+  document.getElementById('nodeModalTitle').textContent = id ? '编辑节点' : '新增节点';
+  const sel = document.getElementById('nCategory');
+  sel.innerHTML = Object.keys(CATEGORIES).map(c => `<option value="${c}">${c}</option>`).join('');
+  if (n) {
+    document.getElementById('nName').value = n.label;
+    document.getElementById('nCategory').value = n.category;
+    document.getElementById('nDesc').value = n.desc || '';
+    document.getElementById('nTags').value = (n.tags || []).join(', ');
+  } else {
+    document.getElementById('nName').value = '';
+    document.getElementById('nCategory').value = '概念';
+    document.getElementById('nDesc').value = '';
+    document.getElementById('nTags').value = '';
+  }
+  openModal('nodeModal');
+  setTimeout(() => document.getElementById('nName').focus(), 50);
+}
+
+async function saveNodeFromModal() {
+  const name = document.getElementById('nName').value.trim();
+  const category = document.getElementById('nCategory').value;
+  const desc = document.getElementById('nDesc').value.trim();
+  const tags = document.getElementById('nTags').value.split(',').map(s => s.trim()).filter(Boolean);
+  if (!name) { toast('名称不能为空'); return; }
+  const editing = state.editingNodeId;
+  const payload = { label: name, category, desc, tags };
+  const doSave = async (base) => {
+    if (editing) {
+      await API.send('PUT', '/api/nodes/' + editing, { ...payload, graphId: state.graphId, baseUpdatedAt: base });
+    } else {
+      const nid = genId();
+      await API.send('POST', '/api/nodes', { ...payload, id: nid, graphId: state.graphId });
+      state.selectedId = nid;
+    }
+    closeModal('nodeModal');
+    await syncState(); refresh(); renderDetail();
+    toast(editing ? '已更新' : '已新增');
+  };
+  try {
+    await doSave(state.editingNodeBase);
+  } catch (e) {
+    if (e.status === 409 && e.data && e.data.current && e.data.current.updatedAt) {
+      showConflict('node', payload, e.data.current, (serverBase) => doSave(serverBase));
+    } else {
+      toast('保存失败: ' + e.message);
+    }
+  }
+}
+
+async function deleteNode(id) {
+  const n = state.nodes.find(x => x.id === id);
+  if (!n) return;
+  const linked = state.edges.filter(ed => ed.source === id || ed.target === id).length;
+  askDelete({
+    title: '⚠️ 删除节点',
+    detail: `将删除节点 <b>「${escapeHtml(n.label)}」</b>${linked ? `及其 <b>${linked}</b> 条关联` : ''}。`,
+    onOk: async () => {
+      const base = n.updatedAt ? `?graph=${encodeURIComponent(state.graphId)}&base=${encodeURIComponent(n.updatedAt)}` : `?graph=${encodeURIComponent(state.graphId)}`;
+      try {
+        await API.send('DELETE', '/api/nodes/' + id + base);
+        if (state.selectedId === id) state.selectedId = null;
+        await syncState(); refresh(); renderDetail();
+        toast('已移入回收站，可在「🗑 回收站」恢复');
+      } catch (e) {
+        if (e.status === 409) {
+          toast('⚠️ ' + e.message + '，已为你刷新最新数据');
+          await applyRemoteChanges();
+        } else {
+          toast('删除失败: ' + e.message);
+        }
+      }
+    },
+  });
+}
+
+/* ===========================================================
+   删除二次确认 + 回收站（逻辑删除，可恢复）
+   =========================================================== */
+let delAction = null;
+let delArmed = false;
+
+function askDelete({ title, detail, hint, confirmText = '确认删除', onOk }) {
+  delAction = onOk;
+  delArmed = false;
+  const btn = document.getElementById('delConfirmBtn');
+  btn.textContent = confirmText;
+  btn.disabled = false;
+  document.getElementById('delTitle').textContent = title;
+  document.getElementById('delDetail').innerHTML = detail;
+  document.getElementById('delHint').innerHTML = hint || '删除为<b>逻辑删除</b>：数据进入回收站，可随时恢复。';
+  openModal('deleteConfirmModal');
+}
+
+function bindDeleteConfirm() {
+  const btn = document.getElementById('delConfirmBtn');
+  btn.onclick = async () => {
+    if (!delArmed) {
+      delArmed = true;
+      btn.textContent = '⚠️ 再点一次确认执行';
+      return;
+    }
+    btn.disabled = true;
+    const fn = delAction;
+    delAction = null;
+    delArmed = false;
+    closeModal('deleteConfirmModal');
+    btn.textContent = '确认删除';
+    btn.disabled = false;
+    if (fn) await fn();
+  };
+}
+
+async function openTrash() {
+  openModal('trashModal');
+  await reloadTrash();
+}
+
+async function reloadTrash() {
+  const list = document.getElementById('trashList');
+  try {
+    const r = await API.get('/api/trash');
+    const items = r.items || [];
+    state.trashItems = items;
+    if (!items.length) {
+      list.innerHTML = '<div style="color:var(--text-3);text-align:center;padding:24px;">回收站是空的</div>';
+      return;
+    }
+    const TYPE_NAME = { node: '节点', edge: '关联', version: '版本', graph: '图谱' };
+    const TYPE_ICON = { node: '📦', edge: '🔗', version: '🕐', graph: '🗂' };
+    list.innerHTML = items.map(it => `
+      <div class="version-item">
+        <div class="version-info">
+          <div class="version-name">${TYPE_ICON[it.type] || '•'} ${escapeHtml(it.summary)}</div>
+          <div class="version-meta">${TYPE_NAME[it.type] || it.type} · 图谱: ${escapeHtml(it.graphName)} · 删除于 ${new Date(it.deletedAt).toLocaleString('zh-CN')}</div>
+        </div>
+        <div class="version-actions">
+          <button class="btn" onclick="restoreTrash('${it.type}','${it.id}')">♻ 恢复</button>
+          <button class="btn danger" onclick="purgeTrash('${it.type}','${it.id}')">彻底删除</button>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {
+    list.innerHTML = `<div style="color:var(--danger);">加载失败: ${escapeHtml(e.message)}</div>`;
+  }
+}
+
+async function restoreTrash(type, id) {
+  try {
+    const r = await API.send('POST', '/api/trash/restore', { type, id });
+    toast(r.restored || '已恢复');
+    await reloadTrash();
+    await syncState(); refresh(); renderDetail();
+  } catch (e) { toast('恢复失败: ' + e.message); }
+}
+
+async function purgeTrash(type, id) {
+  const it = (state.trashItems || []).find(x => x.type === type && x.id === id);
+  askDelete({
+    title: '⚠️ 彻底删除（不可恢复）',
+    detail: `将<b>永久删除</b>「${escapeHtml(it ? it.summary : id)}」，此操作无法撤销。`,
+    hint: '彻底删除后无法再从回收站恢复；仅自动备份/版本快照中可能仍留有历史副本。',
+    onOk: async () => {
+      try {
+        await API.send('POST', '/api/trash/purge', { type, id });
+        toast('已彻底删除');
+        await reloadTrash();
+      } catch (e) { toast('彻底删除失败: ' + e.message); }
+    },
+  });
+}
+
+async function emptyTrash() {
+  const n = (state.trashItems || []).length;
+  if (!n) { toast('回收站已是空的'); return; }
+  askDelete({
+    title: '⚠️ 清空回收站',
+    detail: `将<b>永久删除</b>回收站中的全部 <b>${n}</b> 项，此操作无法撤销。`,
+    hint: '彻底删除后无法恢复；仅自动备份/版本快照中可能仍留有历史副本。',
+    onOk: async () => {
+      try {
+        const r = await API.send('POST', '/api/trash/empty', {});
+        toast(`已清空回收站（${r.purged} 项）`);
+        await reloadTrash();
+      } catch (e) { toast('清空失败: ' + e.message); }
+    },
+  });
+}
+
+/* ===========================================================
+   关联 CRUD（API 版 · 完整增删改查）
+   =========================================================== */
+/* ---- 可筛选组合框：隐藏 select 承载值，文本框输入即筛选 ---- */
+function makeNodeCombo(selectId) {
+  const select = document.getElementById(selectId);
+  const input = document.getElementById(selectId + 'Input');
+  const list = document.getElementById(selectId + 'List');
+  let items = [], activeIdx = -1;
+
+  const render = (kw) => {
+    const q = (kw || '').trim().toLowerCase();
+    items = [...select.options].filter(o => {
+      const label = o.dataset.label || o.textContent;
+      const cat = o.dataset.cat || '';
+      return !q || label.toLowerCase().includes(q) || cat.toLowerCase().includes(q);
+    });
+    activeIdx = items.length ? 0 : -1;
+    list.innerHTML = items.length
+      ? items.map((o, i) => `<div class="combo-item${i === 0 ? ' active' : ''}" data-v="${o.value}" data-label="${escapeHtml(o.dataset.label || o.textContent)}">
+          <span>${escapeHtml(o.dataset.label || o.textContent)}</span>
+          ${o.dataset.cat ? `<span class="combo-cat">${escapeHtml(o.dataset.cat)}</span>` : ''}
+        </div>`).join('')
+      : '<div class="combo-empty">无匹配节点</div>';
+    list.style.display = 'block';
+  };
+  const hide = () => { list.style.display = 'none'; };
+  const pick = (opt) => {
+    select.value = opt.value;
+    input.value = opt.dataset.label || opt.textContent;
+    hide();
+  };
+  const currentLabel = () => {
+    const o = select.selectedOptions[0];
+    return o ? (o.dataset.label || o.textContent) : '';
+  };
+
+  input.addEventListener('focus', () => {
+    // 聚焦时若文本框就是当前选中值，清空显示完整列表便于重新筛选
+    input.value = '';
+    render('');
+  });
+  input.addEventListener('input', () => render(input.value));
+  input.addEventListener('blur', () => setTimeout(() => {
+    hide();
+    // 失焦时还原为当前选中值（避免显示一半的筛选词）
+    input.value = currentLabel();
+  }, 150));
+  input.addEventListener('keydown', (ev) => {
+    if (list.style.display !== 'block') return;
+    if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+      ev.preventDefault();
+      if (!items.length) return;
+      activeIdx = (activeIdx + (ev.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+      [...list.querySelectorAll('.combo-item')].forEach((el, i) => el.classList.toggle('active', i === activeIdx));
+      list.children[activeIdx] && list.children[activeIdx].scrollIntoView({ block: 'nearest' });
+    } else if (ev.key === 'Enter') {
+      ev.preventDefault();
+      if (activeIdx >= 0 && items[activeIdx]) pick(items[activeIdx]);
+    } else if (ev.key === 'Escape') {
+      hide(); input.value = currentLabel();
+    }
+  });
+  list.addEventListener('mousedown', (ev) => {
+    const item = ev.target.closest('.combo-item');
+    if (!item) return;
+    ev.preventDefault();   // 防止先触发 input blur 清掉列表
+    const opt = [...select.options].find(o => o.value === item.dataset.v);
+    if (opt) pick(opt);
+  });
+  // 弹窗打开后同步显示值
+  select.comboSync = () => { input.value = currentLabel(); };
+}
+
+function makeRelationCombo() {
+  const input = document.getElementById('eRelation');
+  const list = document.getElementById('eRelationList');
+  let items = [], activeIdx = -1;
+
+  const render = (kw) => {
+    const q = (kw || '').trim().toLowerCase();
+    items = (state.relationSuggestions || []).filter(r => !q || r.toLowerCase().includes(q));
+    activeIdx = items.length ? 0 : -1;
+    list.innerHTML = items.length
+      ? items.map((r, i) => `<div class="combo-item${i === 0 ? ' active' : ''}" data-v="${escapeHtml(r)}"><span>${escapeHtml(r)}</span></div>`).join('')
+      : '<div class="combo-empty">无匹配，可直接使用输入的自定义关系</div>';
+    list.style.display = 'block';
+  };
+  const hide = () => { list.style.display = 'none'; };
+
+  input.addEventListener('focus', () => render(input.value));
+  input.addEventListener('input', () => render(input.value));
+  input.addEventListener('blur', () => setTimeout(hide, 150));
+  input.addEventListener('keydown', (ev) => {
+    if (list.style.display !== 'block') return;
+    if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+      ev.preventDefault();
+      if (!items.length) return;
+      activeIdx = (activeIdx + (ev.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+      [...list.querySelectorAll('.combo-item')].forEach((el, i) => el.classList.toggle('active', i === activeIdx));
+      list.children[activeIdx] && list.children[activeIdx].scrollIntoView({ block: 'nearest' });
+    } else if (ev.key === 'Enter' && activeIdx >= 0 && items[activeIdx]) {
+      ev.preventDefault();
+      input.value = items[activeIdx]; hide();
+    } else if (ev.key === 'Escape') {
+      hide();
+    }
+  });
+  list.addEventListener('mousedown', (ev) => {
+    const item = ev.target.closest('.combo-item');
+    if (!item) return;
+    ev.preventDefault();
+    input.value = item.dataset.v; hide();
+  });
+}
+
+function openEdgeModal(edgeId, prefillSource) {
+  state.editingEdgeId = edgeId || null;
+  state.presenceEditing = edgeId ? { type: 'edge', id: edgeId, graph: state.graphId } : null;
+  const ed = edgeId ? state.edges.find(x => x.id === edgeId) : null;
+  state.editingEdgeBase = ed ? (ed.updatedAt || null) : null;
+  if (edgeId) {
+    const others = othersEditing('edge', edgeId);
+    if (others.length) toast('⚠️ ' + others.map(o => o.name).join('、') + ' 也在编辑此关联，注意冲突');
+  }
+  document.getElementById('edgeModalTitle').textContent = edgeId ? '编辑关联' : '新增关联';
+  const opts = state.nodes.map(n =>
+    `<option value="${n.id}" data-label="${escapeHtml(n.label)}" data-cat="${escapeHtml(n.category)}">${escapeHtml(n.label)}</option>`).join('');
+  document.getElementById('eSource').innerHTML = opts;
+  document.getElementById('eTarget').innerHTML = opts;
+  // 关系建议 = 预置类型 + 当前图谱已使用的关系（去重）
+  const preset = ['包含', '属于', '前置', '影响', '流向', '使用', '对应', '关联', '签发', '办理'];
+  const used = [...new Set(state.edges.map(e => e.relation).filter(Boolean))];
+  state.relationSuggestions = [...new Set([...preset, ...used])];
+  if (ed) {
+    document.getElementById('eSource').value = ed.source;
+    document.getElementById('eTarget').value = ed.target;
+    document.getElementById('eRelation').value = ed.relation;
+    document.getElementById('eDesc').value = ed.desc || '';
+    document.getElementById('eWeight').value = String(ed.weight || 2);
+  } else {
+    document.getElementById('eRelation').value = '';
+    document.getElementById('eDesc').value = '';
+    document.getElementById('eWeight').value = '2';
+    if (prefillSource) document.getElementById('eSource').value = prefillSource;
+  }
+  document.getElementById('eSource').comboSync();
+  document.getElementById('eTarget').comboSync();
+  openModal('edgeModal');
+}
+
+async function saveEdgeFromModal() {
+  const editing = state.editingEdgeId;
+  const payload = {
+    source: document.getElementById('eSource').value,
+    target: document.getElementById('eTarget').value,
+    relation: document.getElementById('eRelation').value.trim(),
+    weight: parseInt(document.getElementById('eWeight').value, 10) || 2,
+    desc: document.getElementById('eDesc').value.trim(),
+  };
+  if (!payload.source || !payload.target) { toast('请选起点和终点'); return; }
+  if (payload.source === payload.target) { toast('不能关联自身'); return; }
+  if (!payload.relation) { toast('请填关系类型'); return; }
+  const doSave = async (base) => {
+    if (editing) {
+      await API.send('PUT', '/api/edges/' + editing, { ...payload, graphId: state.graphId, baseUpdatedAt: base });
+    } else {
+      await API.send('POST', '/api/edges', { ...payload, graphId: state.graphId });
+    }
+    closeModal('edgeModal');
+    await syncState(); refresh();
+    if (editing) { state.selectedEdgeId = editing; renderDetail(); }
+    toast(editing ? '关联已更新' : '已新增关联');
+  };
+  try {
+    await doSave(state.editingEdgeBase);
+  } catch (e) {
+    if (e.status === 409 && e.data && e.data.current && e.data.current.updatedAt) {
+      showConflict('edge', payload, e.data.current, (serverBase) => doSave(serverBase));
+    } else {
+      toast('保存失败: ' + e.message);
+    }
+  }
+}
+
+async function deleteEdge(id) {
+  const ed = state.edges.find(x => x.id === id);
+  if (!ed) return;
+  askDelete({
+    title: '⚠️ 删除关联',
+    detail: `将删除关联 <b>「${escapeHtml(nodeLabel(ed.source))} → ${escapeHtml(nodeLabel(ed.target))}（${escapeHtml(ed.relation)}）」</b>。`,
+    onOk: async () => {
+      const base = ed.updatedAt ? `?graph=${encodeURIComponent(state.graphId)}&base=${encodeURIComponent(ed.updatedAt)}` : `?graph=${encodeURIComponent(state.graphId)}`;
+      try {
+        await API.send('DELETE', '/api/edges/' + id + base);
+        if (state.selectedEdgeId === id) state.selectedEdgeId = null;
+        await syncState(); refresh(); renderDetail();
+        toast('关联已移入回收站，可恢复');
+      } catch (e) {
+        if (e.status === 409) {
+          toast('⚠️ ' + e.message + '，已为你刷新最新数据');
+          await applyRemoteChanges();
+        } else {
+          toast('删除失败: ' + e.message);
+        }
+      }
+    },
+  });
+}
+
+/* ===========================================================
+   冲突解决（乐观锁 409 → 对比 → 二选一）
+   =========================================================== */
+function nodeLabel(id) {
+  const n = state.nodes.find(x => x.id === id);
+  return n ? n.label : (id || '');
+}
+const NODE_FIELDS = [
+  ['名称', 'label'], ['分类', 'category'], ['描述', 'desc'],
+  ['标签', 'tags', v => (v || []).join(', ')],
+];
+const EDGE_FIELDS = [
+  ['起点', 'source', nodeLabel], ['终点', 'target', nodeLabel],
+  ['关系类型', 'relation'], ['权重', 'weight'], ['说明', 'desc'],
+];
+
+function showConflict(kind, myPayload, serverRow, onOverwrite) {
+  const fields = kind === 'node' ? NODE_FIELDS : EDGE_FIELDS;
+  const what = kind === 'node' ? '节点' : '关联';
+  const rows = fields.map(([name, key, fmt]) => {
+    const f = fmt || (v => v == null ? '' : String(v));
+    const mine = f(myPayload[key]);
+    const theirs = f(serverRow[key]);
+    const diff = String(mine) !== String(theirs);
+    return `<tr>
+      <td style="color:var(--text-2);">${name}</td>
+      <td>${escapeHtml(mine || '（空）')}</td>
+      <td style="${diff ? 'color:var(--danger);font-weight:500;' : ''}">${escapeHtml(theirs || '（空）')}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('conflictBody').innerHTML = `
+    <p style="margin:0 0 10px;color:var(--text-2);">这条${what}在你编辑期间被其他人修改了。红色为与你的版本不同的字段，请选择保留哪个版本：</p>
+    <table class="conflict-table">
+      <tr><th>字段</th><th>我的修改</th><th>服务器最新</th></tr>
+      ${rows}
+    </table>`;
+  openModal('conflictModal');
+  document.getElementById('conflictTakeMine').onclick = async () => {
+    try {
+      await onOverwrite(serverRow.updatedAt);
+      closeModal('conflictModal');
+      toast('已用你的版本覆盖');
+    } catch (e) { toast('覆盖失败: ' + e.message); }
+  };
+  document.getElementById('conflictTakeTheirs').onclick = async () => {
+    closeModal('conflictModal');
+    closeModal(kind === 'node' ? 'nodeModal' : 'edgeModal');
+    await applyRemoteChanges();
+    toast('已采用最新数据，你的修改已放弃');
+  };
+}
+
+/* ===========================================================
+   右键菜单
+   =========================================================== */
+function showContextMenu(x, y) {
+  const m = document.getElementById('ctxMenu');
+  m.style.left = x + 'px';
+  m.style.top = y + 'px';
+  m.classList.add('open');
+}
+function hideContextMenu() { document.getElementById('ctxMenu').classList.remove('open'); }
+document.addEventListener('click', e => {
+  if (!e.target.closest('.context-menu')) hideContextMenu();
+});
+document.getElementById('ctxMenu').querySelectorAll('.ctx-item').forEach(el => {
+  el.onclick = () => {
+    const action = el.dataset.action;
+    const id = state.contextNodeId;
+    hideContextMenu();
+    if (!id) return;
+    if (action === 'edit') openNodeModal(id);
+    else if (action === 'addRel') openEdgeModal(null, id);
+    else if (action === 'focus') focusNode(id);
+    else if (action === 'delete') deleteNode(id);
+  };
+});
+
+/* ===========================================================
+   版本控制（API 版 · 含生效/失效生命周期）
+   =========================================================== */
+function openSaveVersion() {
+  document.getElementById('vName').value = '';
+  document.getElementById('vDesc').value = '';
+  document.getElementById('vFrom').value = '';
+  document.getElementById('vTo').value = '';
+  document.getElementById('vStats').textContent = `当前：${state.nodes.length} 节点，${state.edges.length} 关联`;
+  openModal('versionModal');
+  setTimeout(() => document.getElementById('vName').focus(), 50);
+}
+
+async function saveVersion() {
+  const name = document.getElementById('vName').value.trim();
+  if (!name) { toast('请输入版本名'); return; }
+  const fv = document.getElementById('vFrom').value;
+  const tv = document.getElementById('vTo').value;
+  const err = validateWindow(fv ? new Date(fv).toISOString() : null, tv ? new Date(tv).toISOString() : null);
+  if (err) { toast(err); return; }
+  try {
+    await API.send('POST', '/api/versions', {
+      name,
+      graphId: state.graphId,
+      desc: document.getElementById('vDesc').value.trim(),
+      effectiveFrom: fv ? new Date(fv).toISOString() : null,
+      effectiveTo: tv ? new Date(tv).toISOString() : null,
+    });
+    closeModal('versionModal');
+    await syncState(); refresh();
+    toast('版本已保存');
+  } catch (e) { toast('保存失败: ' + e.message); }
+}
+
+function openVersionsList() {
+  document.getElementById('vFilterStatus').value = 'all';
+  document.getElementById('vFilterKw').value = '';
+  renderVersionsList();
+  openModal('versionsListModal');
+}
+
+function renderVersionsList() {
+  const st = document.getElementById('vFilterStatus').value;
+  const kw = document.getElementById('vFilterKw').value.trim().toLowerCase();
+  const vers = state.versions.filter(v => {
+    if (st !== 'all' && versionStatus(v) !== st) return false;
+    if (kw && !((v.name||'').toLowerCase().includes(kw) || (v.desc||'').toLowerCase().includes(kw))) return false;
+    return true;
+  });
+  const list = document.getElementById('versionsList');
+  if (!vers.length) {
+    list.innerHTML = '<div style="color:var(--text-3);text-align:center;padding:24px;">没有符合条件的版本</div>';
+  } else {
+    list.innerHTML = vers.map(v => {
+      const t = new Date(v.timestamp).toLocaleString('zh-CN');
+      const status = versionStatus(v);
+      const ov = overlapCount(state.versions, v);
+      return `
+        <div class="version-item">
+          <div class="version-info">
+            <div class="version-name">${escapeHtml(v.name)}<span class="${STATUS_BADGE[status]}">${status}</span>${ov ? '<span title="生效时间窗与其他版本重叠，建议调整"> ⚠️</span>' : ''}</div>
+            <div class="version-meta">创建: ${t} · ${v.nodes.length}节点 · ${v.edges.length}关联</div>
+            <div class="version-meta">生效: ${fmtLocal(v.effectiveFrom)} → 失效: ${fmtLocal(v.effectiveTo)}${v.desc ? ' · ' + escapeHtml(v.desc) : ''}</div>
+          </div>
+          <div class="version-actions">
+            <button class="btn" onclick="restoreVersion('${v.id}')">恢复</button>
+            <button class="btn" onclick="openEditVersion('${v.id}')">编辑</button>
+            <button class="btn danger" onclick="deleteVersion('${v.id}')">删除</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+  const bks = state.backups;
+  const bk = document.getElementById('backupsSection');
+  bk.innerHTML = `<h4 style="font-size:12px;color:var(--text-2);margin:16px 0 8px;font-weight:500;">自动备份（最近15条 · 每60秒最多一条）</h4>` + (
+    bks.length ? bks.map(b => `
+      <div class="version-item">
+        <div class="version-info">
+          <div class="version-name" style="font-weight:400;">自动备份</div>
+          <div class="version-meta">${new Date(b.timestamp).toLocaleString('zh-CN')} · ${b.nodes.length}节点 · ${b.edges.length}关联</div>
+        </div>
+        <div class="version-actions">
+          <button class="btn" onclick="restoreBackup('${b.id}')">恢复</button>
+        </div>
+      </div>
+    `).join('') : '<div style="color:var(--text-3);font-size:12px;">暂无自动备份</div>'
+  );
+}
+
+async function restoreVersion(id) {
+  const v = state.versions.find(x => x.id === id);
+  askDelete({
+    title: '⚠️ 覆盖恢复',
+    detail: `将用版本 <b>「${v ? escapeHtml(v.name) : id}」</b> 的快照<b>覆盖</b>当前图谱数据。`,
+    hint: '被覆盖的当前数据会自动进入回收站，可再恢复。',
+    confirmText: '确认覆盖恢复',
+    onOk: async () => {
+      try {
+        const name = v ? v.name : id;
+        await API.send('POST', `/api/versions/${id}/restore`);
+        closeModal('versionsListModal');
+        await syncState(); refresh(); renderDetail();
+        toast('已恢复: ' + name);
+      } catch (e) { toast('恢复失败: ' + e.message); }
+    },
+  });
+}
+
+async function restoreBackup(id) {
+  askDelete({
+    title: '⚠️ 覆盖恢复',
+    detail: `将用这条<b>自动备份</b>的快照<b>覆盖</b>当前图谱数据。`,
+    hint: '被覆盖的当前数据会自动进入回收站，可再恢复。',
+    confirmText: '确认覆盖恢复',
+    onOk: async () => {
+      try {
+        await API.send('POST', `/api/backups/${id}/restore`);
+        closeModal('versionsListModal');
+        await syncState(); refresh(); renderDetail();
+        toast('已从自动备份恢复');
+      } catch (e) { toast('恢复失败: ' + e.message); }
+    },
+  });
+}
+
+function openEditVersion(id) {
+  const v = state.versions.find(x => x.id === id);
+  if (!v) return;
+  document.getElementById('evId').value = v.id;
+  document.getElementById('evName').value = v.name || '';
+  document.getElementById('evDesc').value = v.desc || '';
+  document.getElementById('evFrom').value = v.effectiveFrom ? toLocalInput(v.effectiveFrom) : '';
+  document.getElementById('evTo').value = v.effectiveTo ? toLocalInput(v.effectiveTo) : '';
+  openModal('editVersionModal');
+}
+
+async function saveEditVersion() {
+  const id = document.getElementById('evId').value;
+  const name = document.getElementById('evName').value.trim();
+  if (!name) { toast('版本名不能为空'); return; }
+  const fv = document.getElementById('evFrom').value;
+  const tv = document.getElementById('evTo').value;
+  const err = validateWindow(fv ? new Date(fv).toISOString() : null, tv ? new Date(tv).toISOString() : null);
+  if (err) { toast(err); return; }
+  try {
+    await API.send('PUT', '/api/versions/' + id, {
+      name,
+      graphId: state.graphId,
+      desc: document.getElementById('evDesc').value.trim(),
+      effectiveFrom: fv ? new Date(fv).toISOString() : null,
+      effectiveTo: tv ? new Date(tv).toISOString() : null,
+    });
+    closeModal('editVersionModal');
+    await syncState(); renderVersionsList();
+    toast('版本已更新');
+  } catch (e) { toast('更新失败: ' + e.message); }
+}
+
+async function deleteVersion(id) {
+  const v = state.versions.find(x => x.id === id);
+  askDelete({
+    title: '⚠️ 删除版本',
+    detail: `将删除版本 <b>「${v ? escapeHtml(v.name) : id}」</b>。`,
+    hint: '版本为<b>逻辑删除</b>：进入回收站，可恢复。',
+    onOk: async () => {
+      try {
+        await API.send('DELETE', `/api/versions/${id}?graph=${encodeURIComponent(state.graphId)}`);
+        await syncState(); renderVersionsList();
+        toast('版本已移入回收站，可恢复');
+      } catch (e) { toast('删除失败: ' + e.message); }
+    },
+  });
+}
+
+/* ===========================================================
+   导入/导出/重置（API 版）
+   =========================================================== */
+function exportData() {
+  const a = document.createElement('a');
+  a.href = '/api/export';
+  a.download = `知识图谱-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  toast('已导出（含全部图谱与版本历史）');
+}
+
+async function applyImport(d, okPrefix) {
+  if (!Array.isArray(d.nodes) || !Array.isArray(d.edges)) throw new Error('格式错误：缺少 nodes/edges');
+  d.currentGraphId = d.currentGraphId || state.graphId;
+  const res = await API.send('POST', '/api/import', d);
+  await syncState(); refresh(); renderDetail();
+  const msg = `${okPrefix} ${res.nodes}节点 ${res.edges}关联` + (res.versions ? ` ${res.versions}版本` : '');
+  toast(msg);
+  return res;
+}
+
+async function importData(file) {
+  try {
+    const d = JSON.parse(await file.text());
+    await applyImport(d, '已导入');
+  } catch (e) { toast('导入失败: ' + e.message); }
+}
+
+/* ===========================================================
+   实例间同步（浏览器直连对端 API，服务端已开 CORS）
+   =========================================================== */
+function syncUrlNorm() {
+  let u = document.getElementById('syncUrl').value.trim().replace(/\/+$/, '');
+  if (u && !/^https?:\/\//.test(u)) u = 'https://' + u;
+  return u;
+}
+
+function isLocalAddr(url) { return /\/\/(127\.0\.0\.1|localhost)/.test(url); }
+
+function describeState(s) {
+  const g = Array.isArray(s.graphs) ? ` ${s.graphs.length} 图谱 ·` : '';
+  return `${g}${(s.nodes || []).length} 节点 · ${(s.edges || []).length} 关联 · ${(s.versions || []).length} 版本`;
+}
+
+async function fetchRemoteState(url) {
+  const r = await fetch(url + '/api/export');
+  if (!r.ok) throw new Error('对端返回 HTTP ' + r.status);
+  return r.json();
+}
+
+function openSyncModal() {
+  document.getElementById('syncUrl').value = localStorage.getItem('kg_sync_url') || '';
+  document.getElementById('syncPreview').innerHTML = '';
+  openModal('syncModal');
+}
+
+async function syncPull() {
+  const url = syncUrlNorm();
+  const prev = document.getElementById('syncPreview');
+  if (!url) { toast('请填对端地址'); return; }
+  localStorage.setItem('kg_sync_url', url);
+  try {
+    prev.textContent = '正在读取对端数据…';
+    const remote = await fetchRemoteState(url);
+    prev.innerHTML = `
+      对端：${describeState(remote)}　|　本页：${state.nodes.length} 节点 · ${state.edges.length} 关联 · ${state.versions.length} 版本<br>
+      <b>确认后本页数据将被对端整体替换</b>（本页被覆盖的数据会进入回收站）
+      <button class="btn danger" id="btnSyncPullGo" style="margin-left:8px;">确认拉取替换</button>`;
+    document.getElementById('btnSyncPullGo').onclick = () => {
+      askDelete({
+        title: '⚠️ 拉取替换本页数据',
+        detail: `对端数据（${describeState(remote)}）将<b>整体替换</b>本页当前数据。`,
+        hint: '本页被覆盖的数据会自动进入回收站，可再恢复。',
+        confirmText: '确认拉取替换',
+        onOk: async () => {
+          try {
+            await applyImport(remote, `已从 ${url} 同步：`);
+            prev.innerHTML = '<span style="color:var(--success);">✓ 拉取完成，本页已是对端数据</span>';
+          } catch (e) { prev.innerHTML = `<span style="color:var(--danger);">拉取失败：${escapeHtml(e.message)}</span>`; }
+        },
+      });
+    };
+  } catch (e) {
+    let tip = '';
+    if (isLocalAddr(url)) tip = '<br>提示：当前页面若在云端打开，无法访问本机地址 127.0.0.1——应在本机页面上操作，或改用云端地址。';
+    prev.innerHTML = `<span style="color:var(--danger);">读取对端失败：${escapeHtml(e.message)}</span>${tip}`;
+  }
+}
+
+async function syncPush() {
+  const url = syncUrlNorm();
+  const prev = document.getElementById('syncPreview');
+  if (!url) { toast('请填对端地址'); return; }
+  localStorage.setItem('kg_sync_url', url);
+  try {
+    prev.textContent = '正在读取对端信息…';
+    let remote = null;
+    try { remote = await fetchRemoteState(url); } catch (e) { remote = null; }
+    prev.innerHTML = `
+      本页：${state.nodes.length} 节点 · ${state.edges.length} 关联 · ${state.versions.length} 版本${remote ? `　|　对端：${describeState(remote)}` : '　（对端暂不可读，推送可能失败）'}<br>
+      <b>确认后对端数据将被本页整体替换</b>（对端被覆盖的数据会进入对端回收站）
+      <button class="btn danger" id="btnSyncPushGo" style="margin-left:8px;">确认推送替换</button>`;
+    document.getElementById('btnSyncPushGo').onclick = () => {
+      askDelete({
+        title: '⚠️ 推送替换对端数据',
+        detail: `本页数据（${describeState({nodes: state.nodes, edges: state.edges, versions: state.versions, graphs: state.graphs})}）将<b>整体替换</b>对端数据。`,
+        hint: '对端被覆盖的数据会自动进入对端回收站，可再恢复。',
+        confirmText: '确认推送替换',
+        onOk: async () => {
+          try {
+            const payload = await API.get('/api/export');
+            const r = await fetch(url + '/api/import', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+            });
+            const d = await r.json().catch(() => ({}));
+            if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
+            prev.innerHTML = `<span style="color:var(--success);">✓ 推送成功，对端现为 ${describeState(d)}。对端打开的页面会在 5 秒内自动刷新。</span>`;
+            toast('已推送到对端');
+          } catch (e) {
+            let tip = '';
+            if (isLocalAddr(url)) tip = '<br>提示：当前页面若在云端打开，无法访问本机地址 127.0.0.1——推送方向只能是「本机页 → 云端」。';
+            prev.innerHTML = `<span style="color:var(--danger);">推送失败：${escapeHtml(e.message)}</span>${tip}`;
+          }
+        },
+      });
+    };
+  } catch (e) {
+    prev.innerHTML = `<span style="color:var(--danger);">${escapeHtml(e.message)}</span>`;
+  }
+}
+
+async function resetData() {
+  askDelete({
+    title: '⚠️ 重置当前图谱',
+    detail: `将<b>清空</b>当前图谱的全部节点/关联${state.graphs.find(g => g.id === state.graphId)?.name ? `（「${escapeHtml(state.graphs.find(g => g.id === state.graphId).name)}」）` : ''}。`,
+    hint: '重置为<b>逻辑清空</b>：原数据进入回收站可恢复；种子图谱会重新播种初始数据。',
+    confirmText: '确认重置',
+    onOk: async () => {
+      try {
+        await API.send('POST', '/api/reset', { graphId: state.graphId });
+        await syncState(); refresh(); renderDetail();
+        toast('当前图谱已重置（原数据在回收站可恢复）');
+      } catch (e) { toast('重置失败: ' + e.message); }
+    },
+  });
+}
+
+/* ===========================================================
+   绑定
+   =========================================================== */
+function bind() {
+  document.getElementById('graphSelect').onchange = e => switchGraph(e.target.value);
+  document.getElementById('btnGraphs').onclick = openGraphsModal;
+  document.getElementById('gCreateBtn').onclick = createGraph;
+  document.getElementById('gNewName').onkeydown = e => { if (e.key === 'Enter') createGraph(); };
+  document.getElementById('btnAddNode').onclick = () => openNodeModal();
+  document.getElementById('btnAddEdge').onclick = () => openEdgeModal();
+  document.getElementById('btnSaveVersion').onclick = openSaveVersion;
+  document.getElementById('btnVersions').onclick = openVersionsList;
+  document.getElementById('btnTrash').onclick = openTrash;
+  document.getElementById('btnTrashEmpty').onclick = emptyTrash;
+  bindDeleteConfirm();
+  document.getElementById('btnExport').onclick = exportData;
+  document.getElementById('btnImport').onclick = () => document.getElementById('importFile').click();
+  document.getElementById('importFile').onchange = e => { if (e.target.files[0]) importData(e.target.files[0]); };
+  document.getElementById('btnSync').onclick = openSyncModal;
+  document.getElementById('btnSyncPull').onclick = syncPull;
+  document.getElementById('btnSyncPush').onclick = syncPush;
+  document.getElementById('btnReset').onclick = resetData;
+  document.getElementById('btnFit').onclick = () => network && network.fit({ animation: { duration: 400 } });
+  document.getElementById('btnStabilize').onclick = () => { if (network) { network.setOptions({ physics: { enabled: true } }); network.stabilize(100); } };
+  document.getElementById('chkCoreOnly').onchange = e => { state.showCoreOnly = e.target.checked; refresh(); };
+  // 筛选一键全选/全不选
+  document.getElementById('catAll').onclick = () => {
+    state.filterCats = new Set(Object.keys(CATEGORIES));
+    updateFilterPanel(); refresh();
+    toast('已显示全部分类');
+  };
+  document.getElementById('catNone').onclick = () => {
+    state.filterCats = new Set();
+    updateFilterPanel(); refresh();
+    toast('已取消全部分类（图谱已隐藏）');
+  };
+  document.getElementById('relAll').onclick = () => {
+    state.filterRels = new Set();
+    updateFilterPanel(); refresh();
+    toast('已清除关联筛选（全部显示）');
+  };
+  document.getElementById('relNone').onclick = () => {
+    state.filterRels = new Set(state.edges.map(e => e.relation));
+    updateFilterPanel(); refresh();
+    toast('已取消全部关联（图谱已隐藏）');
+  };
+  document.getElementById('vFilterStatus').onchange = renderVersionsList;
+  document.getElementById('vFilterKw').oninput = renderVersionsList;
+
+  document.getElementById('nodeSaveBtn').onclick = saveNodeFromModal;
+  document.getElementById('edgeSaveBtn').onclick = saveEdgeFromModal;
+  document.getElementById('vSaveBtn').onclick = saveVersion;
+  document.getElementById('btnRename').onclick = () => {
+    const name = prompt('修改你的显示名（多人协作时展示给其他人）：', me.name);
+    if (name && name.trim()) {
+      me.name = name.trim();
+      localStorage.setItem('kg_name', me.name);
+      renderPresence();
+      heartbeat();
+    }
+  };
+
+  document.getElementById('search').oninput = e => {
+    state.search = e.target.value.trim().toLowerCase();
+    refresh();
+  };
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
+      hideContextMenu();
+    }
+    const isModalOpen = document.querySelector('.modal-backdrop.open');
+    const isTyping = document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'SELECT';
+    if ((e.key === 'Delete' || e.key === 'Backspace') && !isModalOpen && !isTyping) {
+      if (state.selectedEdgeId) deleteEdge(state.selectedEdgeId);
+      else if (state.selectedId) deleteNode(state.selectedId);
+    }
+  });
+}
+
+/* ===========================================================
+   启动
+   =========================================================== */
+window.addEventListener('DOMContentLoaded', async () => {
+  bind();
+  makeNodeCombo('eSource');
+  makeNodeCombo('eTarget');
+  makeRelationCombo();
+  try {
+    await syncState();
+    refresh();
+    renderDetail();
+    renderPresence();
+  } catch (e) {
+    const ce = document.getElementById('connError');
+    ce.style.display = 'flex';
+  }
+  // 多人协作：5 秒心跳（在线列表 + 变更轮询）
+  heartbeat();
+  setInterval(heartbeat, 5000);
+});
+
+// 离开页面时立即清掉"正在编辑"标记（30 秒 TTL 兜底）
+window.addEventListener('pagehide', () => {
+  try {
+    fetch('/api/presence', {
+      method: 'POST', keepalive: true,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clientId: me.clientId, name: me.name, color: me.color, editing: null }),
+    });
+  } catch (e) { /* ignore */ }
+});
+</script>
+</body>
+</html>
