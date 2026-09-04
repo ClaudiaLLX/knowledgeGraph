@@ -510,6 +510,22 @@ class Handler(SimpleHTTPRequestHandler):
             return
         if p == '/api/courseware':
             return self._json([{'id': c[0], 'title': c[1], 'file': c[2]} for c in COURSEWARE])
+        # 静态关键文件改代码直读（与 / 同模式）：SimpleHTTPRequestHandler 路径经云代理偶发 502
+        if p in ('/courseware.html', '/marked.min.js'):
+            fn = 'courseware.html' if p == '/courseware.html' else 'marked.min.js'
+            fpath = os.path.join(ROOT, fn)
+            if not os.path.isfile(fpath):
+                return self._json({'error': 'not found'}, 404)
+            with open(fpath, 'rb') as f:
+                data = f.read()
+            ctype = 'text/html; charset=utf-8' if fn.endswith('.html') else 'application/javascript; charset=utf-8'
+            self.send_response(200)
+            self.send_header('Content-Type', ctype)
+            self.send_header('Content-Length', str(len(data)))
+            self.send_header('Cache-Control', 'no-store')
+            self.end_headers()
+            self.wfile.write(data)
+            return
         m = __import__('re').fullmatch(r'/api/md/([^/]+)', p)
         if m:
             cid = m.group(1)
