@@ -521,10 +521,12 @@ class Handler(SimpleHTTPRequestHandler):
             with open(fpath, 'rb') as f:
                 data = f.read()
             ctype = 'text/html; charset=utf-8' if fn.endswith('.html') else 'application/javascript; charset=utf-8'
+            # marked.min.js 允许缓存（内容稳定），减少重复请求暴露在代理抖动下；html 仍 no-store 便于更新
+            cache = 'public, max-age=86400' if fn.endswith('.js') else 'no-store'
             self.send_response(200)
             self.send_header('Content-Type', ctype)
             self.send_header('Content-Length', str(len(data)))
-            self.send_header('Cache-Control', 'no-store')
+            self.send_header('Cache-Control', cache)
             self.end_headers()
             self.wfile.write(data)
             return
