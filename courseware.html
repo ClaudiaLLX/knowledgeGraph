@@ -70,6 +70,8 @@ const sel = document.getElementById('cwSelect');
 const content = document.getElementById('content');
 const status = document.getElementById('status');
 let list = [];
+let _retryCount = 0;
+const MAX_RETRY = 3;
 
 function render(text){
   content.innerHTML = marked.parse(text);
@@ -93,22 +95,46 @@ sel.addEventListener('change', () => {
   load(id);
 });
 
-fetch('/api/courseware')
-  .then(r => r.json())
-  .then(arr => {
-    list = arr;
-    arr.forEach(c => {
-      const o = document.createElement('option');
-      o.value = c.id; o.textContent = c.title;
-      sel.appendChild(o);
+function loadList(retryNum){
+  fetch('/api/courseware')
+    .then(r => {
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return r.json();
+    })
+    .then(data => {
+      // 容错：云端代理可能返回 {code:502,msg:...} 错误对象
+      if(!Array.isArray(data)){
+        if(retryNum < MAX_RETRY){
+          status.textContent = '课件列表格式异常，'+ (MAX_RETRY - retryNum) +'s 后重试…('+ (retryNum+1) +'/'+ MAX_RETRY +')';
+          setTimeout(() => loadList(retryNum+1), 1500);
+          return;
+        }
+        throw new Error('服务器返回了非列表数据（可能是临时故障），请刷新重试');
+      }
+      list = data;
+      data.forEach(c => {
+        const o = document.createElement('option');
+        o.value = c.id; o.textContent = c.title;
+        sel.appendChild(o);
+      });
+      // 深链：#id 直达
+      const hash = (location.hash || '').replace('#','');
+      const initial = (hash && list.find(x=>x.id===hash)) ? hash : 'manual';
+      sel.value = initial;
+      if(initial) load(initial);
+    })
+    .catch(e => {
+      if(retryNum < MAX_RETRY){
+        status.textContent = '课件列表加载失败：'+ e.message +'，'+ (MAX_RETRY - retryNum) +'s 后重试…('+ (retryNum+1) +'/'+ MAX_RETRY +')';
+        setTimeout(() => loadList(retryNum+1), 1500);
+      } else {
+        status.textContent = '课件列表加载失败：' + e.message + '（已重试'+ MAX_RETRY +'次，请稍后刷新页面）';
+      }
     });
-    // 深链：#id 直达
-    const hash = (location.hash || '').replace('#','');
-    const initial = (hash && list.find(x=>x.id===hash)) ? hash : 'manual';
-    sel.value = initial;
-    if(initial) load(initial);
-  })
-  .catch(e => { status.textContent = '课件列表加载失败：' + e.message; });
+}
+
+// 启动时延迟 800ms 等服务就绪（缓解云端冷启动 502）
+setTimeout(() => loadList(0), 800);
 </script>
 </body>
 </html>
