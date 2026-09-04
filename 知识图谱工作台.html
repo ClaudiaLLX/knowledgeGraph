@@ -49,6 +49,9 @@
     font-size: 12px;
     cursor: pointer;
     transition: all 0.12s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
   }
   .btn:hover { background: var(--surface-2); border-color: var(--text-3); }
   .btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
@@ -347,6 +350,7 @@
 
 <header data-page-node-id="trsYCdkbB2zwsYtIARBEni">
   <h1 data-page-node-id="B7tkRJ333fPeRltkO4xIHm">📦 知识图谱工作台</h1>
+  <a href="/courseware.html" class="btn primary" id="btnCourseware" title="国际供应链·总览：课件阅读入口">📚 国际供应链·总览</a>
   <select id="graphSelect" class="search-box" style="width:auto;max-width:220px;" title="切换图谱（按业务拆分）"></select>
   <button class="btn" id="btnGraphs" title="管理图谱：新建 / 重命名 / 删除">🗂 图谱</button>
   <span class="sub" data-page-node-id="613EEEHIOHIbJcDv6dsBcm">SQLite · 多图谱</span>

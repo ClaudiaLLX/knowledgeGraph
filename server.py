@@ -27,6 +27,23 @@ BIND_HOST = '0.0.0.0' if os.environ.get('PORT') else '127.0.0.1'
 BACKUP_INTERVAL = 60      # 秒
 BACKUP_KEEP = 15          # 保留条数
 
+# 国际供应链·总览 课件清单（按学习手册、0–10 依次排序）
+COURSEWARE = [
+    ('manual', '📘 学习手册 · 国际物流与跨境供应链', '国际物流与跨境供应链学习手册.md'),
+    ('c0', '第0章 · 入门知识与案例', '国际供应链-第0章-入门知识与案例.md'),
+    ('c1', '第1章 · 结构与流程', '国际供应链-第1章-结构与流程.md'),
+    ('c2', '第2章 · 国际运输方式', '国际供应链-第2章-国际运输方式.md'),
+    ('c3', '第3章 · 关务与合规', '国际供应链-第3章-关务与合规.md'),
+    ('c4', '第4章 · 仓储与库存', '国际供应链-第4章-仓储与库存.md'),
+    ('c5', '第5章 · 单据与单证', '国际供应链-第5章-单据与单证.md'),
+    ('c6', '第6章 · 跨境支付与结算', '国际供应链-第6章-跨境支付与结算.md'),
+    ('c7', '第7章 · 风险韧性与趋势', '国际供应链-第7章-风险韧性与趋势.md'),
+    ('c8', '第8章 · 供应链系统与数字化', '国际供应链-第8章-供应链系统与数字化.md'),
+    ('c9', '第9章 · 关键指标与绩效管理', '国际供应链-第9章-关键指标与绩效管理.md'),
+    ('c10', '第10章 · 未来趋势与终章', '国际供应链-第10章-未来趋势与终章.md'),
+]
+CW_MAP = {cid: fn for cid, _, fn in COURSEWARE}
+
 _last_backup = [0.0]
 
 PRESENCE_TTL = 30  # 秒，超过无心跳视为离线
@@ -490,6 +507,28 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_header('Cache-Control', 'no-store')
             self.end_headers()
             self.wfile.write(data)
+            return
+        if p == '/api/courseware':
+            return self._json([{'id': c[0], 'title': c[1], 'file': c[2]} for c in COURSEWARE])
+        m = __import__('re').fullmatch(r'/api/md/([^/]+)', p)
+        if m:
+            cid = m.group(1)
+            fn = CW_MAP.get(cid)
+            if not fn:
+                return self._json({'error': 'not found'}, 404)
+            fpath = os.path.join(ROOT, fn)
+            if not os.path.isfile(fpath):
+                return self._json({'error': 'file missing'}, 404)
+            with open(fpath, 'r', encoding='utf-8') as fp:
+                text = fp.read()
+            body = text.encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/markdown; charset=utf-8')
+            self.send_header('Content-Length', str(len(body)))
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Cache-Control', 'no-store')
+            self.end_headers()
+            self.wfile.write(body)
             return
         if p == '/api/state':
             conn = db()
